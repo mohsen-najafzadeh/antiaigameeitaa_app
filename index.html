@@ -52,6 +52,7 @@ body{
 }
 @keyframes flashOk{from{opacity:.9}to{opacity:0}}
 
+/* ============ HOME ============ */
 .hero{padding:22px 4px 14px;text-align:center}
 .logo{
   font-size:36px;font-weight:800;letter-spacing:-.5px;line-height:1.25;
@@ -219,42 +220,48 @@ body{
 .sound-toggle:active{transform:scale(.92)}
 .sound-toggle.muted{color:#5c6675;border-color:var(--line)}
 
-.topbar{display:flex;align-items:center;gap:8px;padding:4px 0 14px;position:relative}
-.topbar h2{margin:0;font-size:16px;font-weight:700;flex:1;text-align:center}
-.back{
-  width:40px;height:40px;border-radius:12px;display:grid;place-items:center;
-  background:var(--card);border:1px solid var(--line);color:var(--txt);
-  font-size:22px;line-height:1;cursor:pointer;padding:0 0 4px;font-family:inherit;
-  transition:transform .12s;
+/* ============ TOPBAR — هماهنگ با هدر اصلی ============ */
+.topbar{
+  display:flex;align-items:center;gap:10px;
+  padding:6px 0 14px;
+  position:relative;
 }
-.back:active{transform:scale(.94)}
+.topbar .back{
+  width:38px;height:38px;border-radius:11px;display:grid;place-items:center;
+  background:var(--card);border:1px solid var(--line);color:var(--txt);
+  font-size:20px;line-height:1;cursor:pointer;padding:0 0 3px;font-family:inherit;
+  transition:transform .12s,border-color .16s;
+}
+.topbar .back:active{transform:scale(.94);border-color:rgba(243,127,0,.5)}
+.topbar .title-wrap{
+  flex:1;text-align:center;min-width:0;
+}
+.topbar .title-wrap h2{
+  margin:0;font-size:15px;font-weight:700;line-height:1.4;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+  color:var(--txt);
+}
+.topbar .title-wrap h2 .t-ico{font-size:16px}
+.topbar .title-wrap small{
+  display:block;font-size:10.5px;color:var(--muted);
+  letter-spacing:1.5px;direction:ltr;text-transform:uppercase;
+  margin-top:2px;font-weight:600;
+}
 .lvl-corner{
-  width:40px;height:40px;border-radius:12px;display:grid;place-items:center;
+  width:38px;height:38px;border-radius:11px;display:grid;place-items:center;
   background:linear-gradient(180deg,rgba(243,127,0,.22),rgba(243,127,0,.08));
   border:1px solid rgba(243,127,0,.5);color:var(--accent-2);
-  font-size:18px;line-height:1;cursor:pointer;padding:0;font-family:inherit;
+  font-size:17px;line-height:1;cursor:pointer;padding:0;font-family:inherit;
   transition:transform .12s,border-color .16s;position:relative;
 }
 .lvl-corner:active{transform:scale(.94);border-color:var(--accent)}
 .lvl-corner .lvl-dot{
-  position:absolute;top:-3px;left:-3px;min-width:18px;height:18px;border-radius:9px;
-  background:var(--accent);color:#241000;font-size:10.5px;font-weight:800;
+  position:absolute;top:-3px;left:-3px;min-width:17px;height:17px;border-radius:9px;
+  background:var(--accent);color:#241000;font-size:10px;font-weight:800;
   display:grid;place-items:center;padding:0 5px;border:2px solid var(--bg);
 }
 
-/* دکمه گزارش — روی کارت سؤال */
-.report-btn{
-  position:absolute;top:14px;left:14px;
-  width:34px;height:34px;border-radius:10px;
-  display:grid;place-items:center;
-  background:rgba(243,127,0,.12);
-  border:1px solid rgba(243,127,0,.35);
-  color:var(--accent-2);font-size:15px;cursor:pointer;
-  transition:transform .12s,border-color .16s;
-  font-family:inherit;padding:0;
-}
-.report-btn:active{transform:scale(.9);border-color:var(--accent)}
-
+/* ============ QUIZ ============ */
 .qhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px;flex-wrap:wrap}
 .pill{
   font-size:12px;color:var(--muted);background:var(--card);
@@ -332,21 +339,20 @@ body{
 }
 @keyframes autoshrink{from{transform:scaleX(1)}to{transform:scaleX(0)}}
 
-/* دکمه‌های پایین صفحه بازی — گزارش و پیشنهاد */
-.game-actions{
-  display:flex;gap:10px;margin-top:16px;
+/* دکمه واحد گزارش خطا در صفحه بازی */
+.report-line{
+  display:flex;justify-content:center;margin-top:16px;
 }
-.game-actions .action-btn{
-  flex:1;
-  display:flex;align-items:center;justify-content:center;gap:7px;
-  padding:11px 12px;border-radius:14px;
+.report-line button{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:11px 20px;border-radius:14px;
   background:var(--card);border:1px solid var(--line);
   color:var(--muted);font:inherit;font-size:12.5px;font-weight:600;
   cursor:pointer;transition:transform .12s,border-color .16s,color .16s;
   font-family:inherit;
 }
-.game-actions .action-btn:active{transform:scale(.97);border-color:var(--accent);color:var(--accent-2)}
-.game-actions .action-btn .ico{font-size:15px}
+.report-line button:active{transform:scale(.97);border-color:var(--accent);color:var(--accent-2)}
+.report-line button .ico{font-size:14px}
 
 .btn{
   font:inherit;font-weight:700;cursor:pointer;border-radius:14px;
@@ -354,7 +360,6 @@ body{
   padding:12px 18px;transition:transform .12s;
 }
 .btn:active{transform:scale(.97)}
-.btn.tiny{padding:9px 15px;font-size:13px;background:var(--accent);color:#241000;border-color:transparent}
 .btn.primary{background:linear-gradient(180deg,#f37f00,#d96a00);color:#241000;border-color:transparent}
 .btn.ghost{background:transparent}
 
@@ -386,10 +391,10 @@ body{
 .suggest b{color:#fff}
 
 .ractions{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
-.ractions .btn{flex:1;min-width:120px}
+.ractions .btn{flex:1;min-width:110px}
 .auto-badge{color:var(--accent-2);font-weight:400;font-size:11.5px}
 
-/* ============ مودال بازخورد ============ */
+/* ============ مودال ============ */
 .modal{
   display:none;position:fixed;inset:0;z-index:10000;
   background:rgba(0,0,0,.78);backdrop-filter:blur(6px);
@@ -550,7 +555,10 @@ body{
   <section class="screen" id="s-level">
     <div class="topbar">
       <button class="back" data-go="home">‹</button>
-      <h2 id="level-title">انتخاب سطح</h2>
+      <div class="title-wrap">
+        <h2><span class="t-ico">🎯</span> انتخاب سطح</h2>
+        <small>Zehn Exercise</small>
+      </div>
       <span class="lvl-corner" style="visibility:hidden"></span>
     </div>
     <div id="level-stage"></div>
@@ -559,7 +567,10 @@ body{
   <section class="screen" id="s-game">
     <div class="topbar">
       <button class="back" data-go="home">‹</button>
-      <h2 id="game-title">بازی</h2>
+      <div class="title-wrap">
+        <h2 id="game-title"><span class="t-ico">🎮</span> بازی</h2>
+        <small>Zehn Exercise</small>
+      </div>
       <button class="lvl-corner" id="lvlBtn" title="تغییر سطح">
         <span id="lvlBtnIcon">🌱</span>
         <span class="lvl-dot" id="lvlBtnDot">۱</span>
@@ -571,7 +582,7 @@ body{
 </div>
 
 <!-- ============================================================
-     مودال بازخورد — گزارش سؤال، پیشنهاد سؤال، نظر و ...
+     مودال بازخورد — گزارش خطا و ارسال پیام/سؤال جدید
 ============================================================ -->
 <div class="modal" id="feedbackModal">
   <div class="modal-inner">
@@ -584,15 +595,18 @@ body{
 
       <label>نوع پیام</label>
       <select id="fbType">
-        <option value="comment">💬 نظر</option>
-        <option value="suggestion">💡 پیشنهاد</option>
         <option value="bug">🐞 گزارش خطا</option>
         <option value="question_fix">✏️ اصلاح سؤال</option>
         <option value="question_new">➕ پیشنهاد سؤال جدید</option>
+        <option value="suggestion">💡 پیشنهاد</option>
+        <option value="comment">💬 نظر</option>
       </select>
 
       <label>نام شما (اختیاری)</label>
       <input id="fbName" type="text" placeholder="مثلاً: علی" maxlength="60"/>
+
+      <label>موبایل (اختیاری — برای پیگیری)</label>
+      <input id="fbMobile" type="tel" placeholder="09123456789" maxlength="20" inputmode="tel"/>
 
       <label>دسته‌بندی سؤال</label>
       <input id="fbCategory" type="text" placeholder="مثلاً: شهرهای ایران / حرم‌شناسی" maxlength="100"/>
@@ -602,9 +616,6 @@ body{
 
       <label>متن پیام <span style="color:#f37f00">*</span></label>
       <textarea id="fbMessage" placeholder="توضیحات، پیشنهاد یا اصلاح..." maxlength="2000"></textarea>
-
-      <label>ایمیل (اختیاری — برای پیگیری)</label>
-      <input id="fbEmail" type="email" placeholder="example@mail.com" maxlength="120"/>
 
       <div class="modal-hint">
         🧠 <b>پیشنهاد:</b> اگر خطای محتوایی یا املایی در سؤال می‌بینی، دسته و متن سؤال را دقیق بنویس تا سریع‌تر اصلاح شود.
@@ -860,31 +871,20 @@ function burstConfetti(x, y){
 /* ============================================================
    📮 فرم بازخورد — Google Apps Script
 ============================================================ */
-/* ⚠️ این مقادیر رو با URL و کلید Apps Script خودت جایگزین کن */
-const FEEDBACK_API    = 'AKfycbzDCXeb1SBjUTNs3fS-yWPySrrsBJbeMjuROYMQ-H5XmtIZZ00H2hWFVjdv0ZqPxH6F';   /* ← مثال: https://script.google.com/macros/s/.../exec */
+const FEEDBACK_API    = 'AKfycbysEPKXlxI8YFuw0emRVZ6lRbvcupcKzUwydqLWaKrzWhcDdb9RA-tvhM7-ePoUK6Dy';   /* ← URL رو بعد از Deploy بذار */
 const FEEDBACK_SECRET = 'zehn_avar_2024';
-
-let feedbackContext = { category:'', question:'' };
 
 function openFeedback(preset = {}){
   const modal = $('#feedbackModal'); if(!modal) return;
 
-  feedbackContext = Object.assign({ category:'', question:'' }, preset);
-
-  /* پیش‌فرض کردن مقادیر از context */
   $('#fbCategory').value = preset.category || '';
   $('#fbQuestion').value = preset.question || '';
   $('#fbMessage').value  = '';
   $('#fbStatus').textContent = '';
 
-  if(preset.type){
-    $('#fbType').value = preset.type;
-  }
-  if(preset.title){
-    $('#fbTitle').textContent = preset.title;
-  } else {
-    $('#fbTitle').textContent = '💬 ارسال پیام';
-  }
+  if(preset.type) $('#fbType').value = preset.type;
+  if(preset.title) $('#fbTitle').textContent = preset.title;
+  else $('#fbTitle').textContent = '💬 ارسال پیام';
 
   modal.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -900,10 +900,10 @@ function closeFeedback(){
 async function submitFeedback(){
   const type     = $('#fbType').value;
   const name     = $('#fbName').value.trim();
+  const mobile   = $('#fbMobile').value.trim();
   const category = $('#fbCategory').value.trim();
   const question = $('#fbQuestion').value.trim();
   const message  = $('#fbMessage').value.trim();
-  const email    = $('#fbEmail').value.trim();
   const statusEl = $('#fbStatus');
   const submitBtn= $('#fbSubmit');
 
@@ -922,10 +922,10 @@ async function submitFeedback(){
   try {
     await fetch(FEEDBACK_API, {
       method: 'POST',
-      mode: 'no-cors',   /* لازم برای Apps Script */
+      mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({
-        type, name, category, question, message, email,
+        type, name, mobile, category, question, message,
         secret: FEEDBACK_SECRET
       })
     });
@@ -1390,12 +1390,9 @@ function startQuiz(host, questions, opts = {}){
           <b>${e.title}</b><br>
           ${e.text}
         </div>
-        <div class="game-actions">
-          <button class="action-btn" id="resReport">
+        <div class="report-line">
+          <button id="resReport">
             <span class="ico">🐞</span><span>گزارش خطا</span>
-          </button>
-          <button class="action-btn" id="resNewQ">
-            <span class="ico">➕</span><span>پیشنهاد سؤال</span>
           </button>
         </div>
         <div class="ractions">
@@ -1417,14 +1414,6 @@ function startQuiz(host, questions, opts = {}){
       openFeedback({
         type: 'bug',
         title: '🐞 گزارش خطا',
-        category: cfg ? cfg.title : ''
-      });
-    });
-    host.querySelector('#resNewQ').addEventListener('click', () => {
-      const cfg = GAMES[opts.gameKey];
-      openFeedback({
-        type: 'question_new',
-        title: '➕ پیشنهاد سؤال جدید',
         category: cfg ? cfg.title : ''
       });
     });
@@ -1452,19 +1441,15 @@ function startQuiz(host, questions, opts = {}){
         <span class="pill score">${fa(score)}</span>
       </div>
       <div class="qcard" id="qcard">
-        <button class="report-btn" id="reportBtn" title="گزارش این سؤال">⚑</button>
         ${q.tag ? `<div class="qtag">${q.tag}</div>` : ''}
         <div class="qmain">${q.main}</div>
         ${q.sub ? `<div class="qsub">${q.sub}</div>` : ''}
       </div>
       <div class="opts ${q.grid ? 'grid2' : ''}"></div>
       <div class="fb"></div>
-      <div class="game-actions">
-        <button class="action-btn" id="reportQ">
-          <span class="ico">✏️</span><span>اصلاح این سؤال</span>
-        </button>
-        <button class="action-btn" id="suggestQ">
-          <span class="ico">➕</span><span>پیشنهاد سؤال جدید</span>
+      <div class="report-line">
+        <button id="reportBtn">
+          <span class="ico">🐞</span><span>گزارش خطا</span>
         </button>
       </div>`;
 
@@ -1473,43 +1458,16 @@ function startQuiz(host, questions, opts = {}){
     const qcard  = host.querySelector('#qcard');
     const correctIdx = q.options.findIndex(o => o.correct);
 
-    /* دکمه کوچک گوشه کارت سؤال */
-    const reportBtn = host.querySelector('#reportBtn');
-    if(reportBtn){
-      reportBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        soundClick();
-        openFeedback({
-          type: 'question_fix',
-          title: '✏️ اصلاح این سؤال',
-          category: cfg ? cfg.title : '',
-          question: q.rawQuestion || q.main.replace(/<[^>]+>/g,'')
-        });
+    /* دکمه واحد گزارش خطا در صفحه بازی */
+    host.querySelector('#reportBtn').addEventListener('click', () => {
+      soundClick();
+      openFeedback({
+        type: 'bug',
+        title: '🐞 گزارش خطا',
+        category: cfg ? cfg.title : '',
+        question: q.rawQuestion || q.main.replace(/<[^>]+>/g,'')
       });
-    }
-    const reportQBtn = host.querySelector('#reportQ');
-    if(reportQBtn){
-      reportQBtn.addEventListener('click', () => {
-        soundClick();
-        openFeedback({
-          type: 'question_fix',
-          title: '✏️ اصلاح این سؤال',
-          category: cfg ? cfg.title : '',
-          question: q.rawQuestion || q.main.replace(/<[^>]+>/g,'')
-        });
-      });
-    }
-    const suggestQBtn = host.querySelector('#suggestQ');
-    if(suggestQBtn){
-      suggestQBtn.addEventListener('click', () => {
-        soundClick();
-        openFeedback({
-          type: 'question_new',
-          title: '➕ پیشنهاد سؤال جدید',
-          category: cfg ? cfg.title : ''
-        });
-      });
-    }
+    });
 
     q.options.forEach((o, idx) => {
       const b = document.createElement('button');
@@ -1588,13 +1546,12 @@ function showLevelPicker(gameKey){
   const cfg = GAMES[gameKey];
   const unlocked = userData.unlockedLevels[gameKey] || 0;
 
-  $('#level-title').textContent = 'انتخاب سطح';
+  $('#level-title').innerHTML = `<span class="t-ico">${cfg.icon}</span> ${cfg.title}`;
 
   const host = $('#level-stage');
   host.innerHTML = `
     <div class="qcard">
       <div class="qtag">انتخاب دستی سطح</div>
-      <div class="qmain">${cfg.icon} ${cfg.title}</div>
       <div class="qsub">با دکمه گوشه بالای صفحه هم می‌توانی در میانه بازی سطح را عوض کنی</div>
     </div>
     <div class="opts">
@@ -1643,7 +1600,7 @@ function startGame(gameKey, level){
   const count    = LEVEL_COUNT[level];
   const optCount = gameKey === 'math' ? 4 : LEVEL_OPTS[level];
 
-  $('#game-title').textContent = `${cfg.num}. ${cfg.icon} ${cfg.title}`;
+  $('#game-title').innerHTML = `<span class="t-ico">${cfg.icon}</span> ${cfg.title}`;
   updateCornerLevelBtn();
 
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -1705,14 +1662,12 @@ updateSoundBtn();
 $('#resetScore').addEventListener('click', resetUser);
 $('#soundToggle').addEventListener('click', toggleSound);
 
-/* رویدادهای مودال بازخورد */
 $('#closeFeedback').addEventListener('click', closeFeedback);
 $('#feedbackModal').addEventListener('click', e => {
   if(e.target.id === 'feedbackModal') closeFeedback();
 });
 $('#fbSubmit').addEventListener('click', submitFeedback);
 
-/* فعال‌سازی AudioContext بعد از اولین کلیک کاربر */
 document.addEventListener('touchstart', () => initAudio(), {once:true, passive:true});
 document.addEventListener('mousedown',  () => initAudio(), {once:true});
 </script>
