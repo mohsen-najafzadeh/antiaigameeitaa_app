@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
 <meta name="theme-color" content="#f37f00"/>
-<title>🇮🇷 ذهن‌آور — Zehn-Avar | Anti AI Game Eitaa</title>
+<title>🇮🇷 ورزش ذهن — Zehn Exercise | Anti AI Game Eitaa</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&display=swap" rel="stylesheet">
@@ -68,46 +68,6 @@ body{
 .brand-en{margin-top:6px;font-size:12.5px;font-weight:700;color:var(--muted);letter-spacing:3px;text-transform:uppercase;direction:ltr}
 .brand-tag{margin-top:3px;font-size:10px;color:var(--muted);letter-spacing:2px;direction:ltr}
 
-/* ============ متن شروع خلاقانه ============ */
-.welcome{
-  margin:14px 0 14px;
-  padding:16px 18px;
-  border-radius:20px;
-  background:linear-gradient(135deg,rgba(243,127,0,.14),rgba(243,127,0,.03));
-  border:1px solid rgba(243,127,0,.42);
-  position:relative;
-  overflow:hidden;
-  animation:rise .4s ease both;
-}
-.welcome::before{
-  content:'';
-  position:absolute;top:-40%;left:-20%;
-  width:180px;height:180px;border-radius:50%;
-  background:radial-gradient(circle,rgba(255,184,77,.18),transparent 70%);
-  pointer-events:none;
-}
-.welcome h3{
-  margin:0 0 10px;
-  font-size:15.5px;font-weight:800;
-  color:var(--accent-2);
-  display:flex;align-items:center;gap:8px;
-}
-.welcome p{
-  margin:0 0 8px;
-  font-size:12.5px;line-height:2;
-  color:#d6dee7;text-align:right;
-}
-.welcome p:last-child{margin-bottom:0}
-.welcome .hl{
-  display:block;margin-top:10px;
-  padding:10px 12px;
-  border-radius:12px;
-  background:rgba(243,127,0,.10);
-  border-right:3px solid var(--accent);
-  font-size:12px;line-height:1.95;color:#ffcf8a;
-}
-.welcome b{color:#fff}
-
 .score-banner{
   margin:12px 0 4px;padding:13px 16px;border-radius:18px;
   background:linear-gradient(135deg,rgba(243,127,0,.16),rgba(243,127,0,.03));
@@ -156,6 +116,11 @@ body{
   display:block;margin:14px 0;padding:12px 14px;border-radius:14px;
   background:rgba(243,127,0,.08);border-right:3px solid var(--accent);
   font-size:12.5px;line-height:2;color:#d6dee7;
+}
+.edu-body .danger{
+  display:block;margin:14px 0;padding:12px 14px;border-radius:14px;
+  background:rgba(239,68,68,.08);border-right:3px solid var(--bad);
+  font-size:12.5px;line-height:2;color:#fca5a5;
 }
 .edu-list{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-direction:column;gap:9px}
 .edu-list li{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.95;color:#c9d3de}
@@ -242,7 +207,6 @@ body{
 }
 .foot .reset-btn:active{color:var(--bad)}
 
-/* ============ دکمه صدا (بالا گوشه) ============ */
 .sound-toggle{
   position:absolute;top:14px;left:16px;
   width:36px;height:36px;border-radius:11px;
@@ -408,27 +372,12 @@ body{
       <div class="hero">
         <div class="logo">
           <span class="brain">🧠</span>
-          <span>ذهن‌آور</span>
+          <span>ورزش ذهن</span>
         </div>
-        <div class="subtitle">۸ بازی کوچک برای ورزش ذهن</div>
-        <div class="brand-en">Zehn-Avar</div>
+        <div class="subtitle">۸ بازی برای تقویت حافظه، تمرکز و سرعت فکر</div>
+        <div class="brand-en">Zehn Exercise</div>
         <div class="brand-tag">Anti AI Game Eitaa</div>
       </div>
-    </div>
-
-    <!-- ====== متن شروع خلاقانه ====== -->
-    <div class="welcome">
-      <h3>🧠 ای ذهن خواب‌آلود! بیدار شو!</h3>
-      <p>
-        اینجا قرار نیست فقط جواب بدی...<br>
-        قراره <b>حافظه‌ت بترکه</b> 💥، <b>تمرکزت تیز بشه</b> 🎯،<br>
-        و <b>سرعت فکرت از هوش مصنوعی جلو بزنه</b> 🤖💨
-      </p>
-      <span class="hl">
-        🇮🇷 ایران رو می‌شناسیم، ذهنمون رو می‌سازیم.<br>
-        ✅ پاسخ درست = امتیاز + کانفتی 🎉<br>
-        ❌ پاسخ غلط = یه نکته‌ی تازه یاد می‌گیری 📚
-      </span>
     </div>
 
     <div class="score-banner" id="scoreBanner">
@@ -453,6 +402,14 @@ body{
         <span class="earrow">‹</span>
       </summary>
       <div class="edu-body">
+
+        <span class="danger">
+          🤖 <b>استفاده‌ی زیاد از هوش مصنوعی ذهن رو تنبل می‌کنه!</b><br>
+          مغز مثل عضله‌ست — هرچی بیشتر ازش استفاده کنی، قوی‌تر می‌شه. ولی وقتی جواب‌ها رو آماده می‌گیری، مغز فکر کردن رو یاد نمی‌گیره.
+          نتیجه؟ حافظه ضعیف، تمرکز کم، خلاقیت خاموش.
+          این اپ برای مقابله با همینه. 🧠💪
+        </span>
+
         <p>
           <b>مغز هم مثل عضله است.</b> همان‌طور که بدن برای سالم ماندن به ورزش نیاز دارد، ذهن هم برای فعال و توانمند ماندن به تمرین مداوم احتیاج دارد. ورزش‌های ذهنی مجموعه‌ای از فعالیت‌هایی هستند که حافظه، تمرکز، سرعت پردازش، حل مسئله و خلاقیت را به چالش می‌کشند.
         </p>
@@ -508,7 +465,7 @@ body{
     </div>
 
     <div class="foot">
-      🧠 ذهن‌آور — Zehn-Avar • Anti AI Game Eitaa<br>
+      🧠 ورزش ذهن — Zehn Exercise • Anti AI Game Eitaa<br>
       کاملاً کلاینت‌ساید • بدون سرور • بدون اینترنت<br>
       <button class="reset-btn" id="resetScore">پاک کردن امتیاز ذخیره‌شده</button>
     </div>
@@ -556,12 +513,12 @@ function shuffle(arr){
 }
 
 /* ============================================================
-   🎵 صداهای خیلی سبک (Web Audio API — بدون فایل خارجی)
+   🎵 صداهای جذاب‌تر با لایه‌ی باس (Web Audio API)
 ============================================================ */
 let audioCtx = null;
 let soundEnabled = true;
 
-const SOUND_KEY = 'zehn_avar_sound_v1';
+const SOUND_KEY = 'zehn_avar_sound_v2';
 try {
   const saved = localStorage.getItem(SOUND_KEY);
   if(saved === 'off') soundEnabled = false;
@@ -577,52 +534,87 @@ function initAudio(){
   return audioCtx;
 }
 
-/* پخش یک تُن کوتاه — لایت و سریع */
-function playTone({freq=440, type='sine', dur=0.08, vol=0.05, slideTo=null}){
+/* پخش یک تُن — با پشتیبانی از لایه‌ی نرم و باس */
+function playTone({freq=440, type='sine', dur=0.1, vol=0.08, slideTo=null, delay=0}){
   if(!soundEnabled) return;
   const ctx = initAudio();
   if(!ctx) return;
   if(ctx.state === 'suspended') ctx.resume();
 
   try {
+    const startAt = ctx.currentTime + delay;
+
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
 
     osc.type = type;
-    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    osc.frequency.setValueAtTime(freq, startAt);
     if(slideTo){
-      osc.frequency.exponentialRampToValueAtTime(slideTo, ctx.currentTime + dur);
+      osc.frequency.exponentialRampToValueAtTime(slideTo, startAt + dur);
     }
 
-    gain.gain.setValueAtTime(0, ctx.currentTime);
-    gain.gain.linearRampToValueAtTime(vol, ctx.currentTime + 0.008);
-    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + dur);
+    gain.gain.setValueAtTime(0, startAt);
+    gain.gain.linearRampToValueAtTime(vol, startAt + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.0001, startAt + dur);
 
     osc.connect(gain);
     gain.connect(ctx.destination);
 
-    osc.start(ctx.currentTime);
-    osc.stop(ctx.currentTime + dur + 0.02);
+    osc.start(startAt);
+    osc.stop(startAt + dur + 0.03);
   } catch(e){ /* silent */ }
 }
 
-/* ۱. صدای کلیک — خیلی کوتاه و نرم */
-function soundClick(){
-  playTone({ freq: 700, type: 'sine', dur: 0.045, vol: 0.03, slideTo: 500 });
+/* لایه‌ی زیرصدا (sub-bass) — گرمی و عمق به صدا می‌ده */
+function playSub({freq=120, dur=0.14, vol=0.05, delay=0}){
+  if(!soundEnabled) return;
+  const ctx = initAudio();
+  if(!ctx) return;
+  if(ctx.state === 'suspended') ctx.resume();
+
+  try {
+    const startAt = ctx.currentTime + delay;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, startAt);
+
+    gain.gain.setValueAtTime(0, startAt);
+    gain.gain.linearRampToValueAtTime(vol, startAt + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.0001, startAt + dur);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start(startAt);
+    osc.stop(startAt + dur + 0.03);
+  } catch(e){ /* silent */ }
 }
 
-/* ۲. صدای درست — دو نت شاد و صعودی */
+/* ۱. صدای کلیک — دو لایه: تُن روشن + باس نرم */
+function soundClick(){
+  playTone({ freq: 780, type: 'sine',  dur: 0.055, vol: 0.07, slideTo: 520 });
+  playSub ({ freq: 160, dur: 0.08, vol: 0.05 });
+}
+
+/* ۲. صدای درست — آرپژ صعودی سه‌نتی + باس گرم */
 function soundCorrect(){
   if(!soundEnabled) return;
-  playTone({ freq: 880, type: 'sine', dur: 0.09, vol: 0.045 });
-  setTimeout(() => {
-    playTone({ freq: 1320, type: 'sine', dur: 0.12, vol: 0.045 });
-  }, 70);
+  const notes = [784, 988, 1319];  /* G5, B5, E6 */
+  notes.forEach((f, i) => {
+    playTone({ freq: f, type: 'sine', dur: 0.13, vol: 0.09, delay: i * 0.065 });
+  });
+  /* باس نرم زیر آرپژ */
+  playSub({ freq: 220, dur: 0.35, vol: 0.07 });
+  /* لایه‌ی هارمونیک بالا برای درخشش */
+  playTone({ freq: 2637, type: 'sine', dur: 0.18, vol: 0.03, delay: 0.13 });
 }
 
-/* ۳. صدای اشتباه — یک نت پایین و کوتاه */
+/* ۳. صدای اشتباه — تُن افتان + باس ضربه‌ای */
 function soundWrong(){
-  playTone({ freq: 220, type: 'triangle', dur: 0.18, vol: 0.045, slideTo: 140 });
+  playTone({ freq: 240, type: 'triangle', dur: 0.22, vol: 0.08, slideTo: 130 });
+  playSub ({ freq: 90,  dur: 0.28, vol: 0.07 });
 }
 
 /* دکمه صدا */
@@ -703,10 +695,10 @@ function getEncouragement(score){
   if(score < 50)  return { ico:'🌱', title:'شروع خوبی بود!', text:'آفرین! هنوز هوش مصنوعی ذهنت رو تخریب نکرده 🤖😄 ادامه بده.' };
   if(score < 150) return { ico:'💪', title:'داری گرم می‌شی!', text:'مغزت داره ورزش می‌کنه و قوی‌تر می‌شه. چند امتیاز دیگه تا رکورد!' };
   if(score < 300) return { ico:'⚡', title:'آفرین! فوق‌العاده‌ای', text:'امتیازت داره بالا می‌ره. ذهنت از هوش مصنوعی هم سریع‌تر شده 🚀' };
-  if(score < 500) return { ico:'🔥', title:'تو یک ذهن‌آور واقعی هستی!', text:'بیشتر از نصف راه رو رفتی. حافظه‌ات داره مثل فولاد می‌شه.' };
+  if(score < 500) return { ico:'🔥', title:'تو یک ورزشکار ذهنی واقعی هستی!', text:'بیشتر از نصف راه رو رفتی. حافظه‌ات داره مثل فولاد می‌شه.' };
   if(score < 800) return { ico:'🏆', title:'قهرمان ذهن!', text:'امتیازت شگفت‌انگیزه. مغزت الان از بسیاری از هوش‌های مصنوعی جلوتره!' };
   if(score < 1200) return { ico:'👑', title:'استاد بزرگ ذهن!', text:'تو الان یک الگوی ورزش ذهنی هستی. هوش مصنوعی باید از تو یاد بگیره 😎' };
-  if(score < 2000) return { ico:'🌟', title:'افسانه‌ی ذهن‌آور!', text:'امتیازی که جمع کردی باورنکردنیه. ذهنت مثل یک ابررایانه کار می‌کنه!' };
+  if(score < 2000) return { ico:'🌟', title:'افسانه‌ی ورزش ذهن!', text:'امتیازی که جمع کردی باورنکردنیه. ذهنت مثل یک ابررایانه کار می‌کنه!' };
   return { ico:'🚀', title:'فراتر از مرزهای ذهن!', text:'تو به قله رسیدی. ذهنت حالا یک نیروگاه واقعیه. به خودت افتخار کن! 🏅' };
 }
 
@@ -931,7 +923,6 @@ const PROVERBS = [
   {q:'سنگ بزرگ ...',            a:'علامت نزدن است',         f:'کنایه از اینکه تهدید بزرگ نشانه عمل نکردن است.'}
 ];
 
-/* بازی ۸: حرم‌شناسی — با پاسخ‌های هم‌جنس */
 const HARAM = [
   {n:'حرم امام رضا (ع) در کدام شهر قرار دارد؟', c:'مشهد', t:'جغرافیا', f:'حرم امام رضا (ع) در قلب شهر مشهد، مرکز استان خراسان رضوی، قرار دارد.'},
   {n:'مدفن امام رضا (ع) در کدام شهر است؟', c:'مشهد', t:'مبانی', f:'علی بن موسی الرضا (ع)، امام هشتم شیعیان، در مشهد به خاک سپرده شده است.'},
@@ -981,7 +972,6 @@ function buildOptions(correct, pool, count){
   return shuffle([correct, ...distractors]).map(v => ({ label:v, correct: v === correct }));
 }
 
-/* برای حرم‌شناسی: گزینه‌های نادرست از پاسخ‌های هم‌دسته انتخاب می‌شوند */
 function buildHaramOptions(correct, category, count){
   const sameCat = HARAM.filter(q => q.t === category).map(q => q.c);
   let pool = uniq([...sameCat, ...HARAM.map(q => q.c)]);
@@ -1284,7 +1274,7 @@ function startQuiz(host, questions, opts = {}){
     function answer(idx, evt){
       if(locked) return;
       locked = true;
-      soundClick();  /* 🎵 صدای کلیک */
+      soundClick();
 
       const nodes = [...optsEl.children];
 
@@ -1305,7 +1295,7 @@ function startQuiz(host, questions, opts = {}){
         score += gain;
         correct++;
         qcard.classList.add('win');
-        soundCorrect();  /* 🎵 صدای درست */
+        soundCorrect();
 
         let cx = window.innerWidth / 2;
         let cy = window.innerHeight / 2;
@@ -1319,7 +1309,7 @@ function startQuiz(host, questions, opts = {}){
       } else {
         streak = 0;
         qcard.classList.add('lose');
-        soundWrong();  /* 🎵 صدای اشتباه */
+        soundWrong();
       }
 
       const delay = right ? DELAY_OK : DELAY_BAD;
