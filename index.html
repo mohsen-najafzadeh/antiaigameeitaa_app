@@ -68,6 +68,46 @@ body{
 .brand-en{margin-top:6px;font-size:12.5px;font-weight:700;color:var(--muted);letter-spacing:3px;text-transform:uppercase;direction:ltr}
 .brand-tag{margin-top:3px;font-size:10px;color:var(--muted);letter-spacing:2px;direction:ltr}
 
+/* ============ متن شروع خلاقانه ============ */
+.welcome{
+  margin:14px 0 14px;
+  padding:16px 18px;
+  border-radius:20px;
+  background:linear-gradient(135deg,rgba(243,127,0,.14),rgba(243,127,0,.03));
+  border:1px solid rgba(243,127,0,.42);
+  position:relative;
+  overflow:hidden;
+  animation:rise .4s ease both;
+}
+.welcome::before{
+  content:'';
+  position:absolute;top:-40%;left:-20%;
+  width:180px;height:180px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,184,77,.18),transparent 70%);
+  pointer-events:none;
+}
+.welcome h3{
+  margin:0 0 10px;
+  font-size:15.5px;font-weight:800;
+  color:var(--accent-2);
+  display:flex;align-items:center;gap:8px;
+}
+.welcome p{
+  margin:0 0 8px;
+  font-size:12.5px;line-height:2;
+  color:#d6dee7;text-align:right;
+}
+.welcome p:last-child{margin-bottom:0}
+.welcome .hl{
+  display:block;margin-top:10px;
+  padding:10px 12px;
+  border-radius:12px;
+  background:rgba(243,127,0,.10);
+  border-right:3px solid var(--accent);
+  font-size:12px;line-height:1.95;color:#ffcf8a;
+}
+.welcome b{color:#fff}
+
 .score-banner{
   margin:12px 0 4px;padding:13px 16px;border-radius:18px;
   background:linear-gradient(135deg,rgba(243,127,0,.16),rgba(243,127,0,.03));
@@ -201,6 +241,19 @@ body{
   text-decoration:underline;padding:4px;margin-top:4px;
 }
 .foot .reset-btn:active{color:var(--bad)}
+
+/* ============ دکمه صدا (بالا گوشه) ============ */
+.sound-toggle{
+  position:absolute;top:14px;left:16px;
+  width:36px;height:36px;border-radius:11px;
+  display:grid;place-items:center;
+  background:var(--card);border:1px solid var(--line);
+  color:var(--accent-2);font-size:16px;cursor:pointer;
+  transition:transform .12s,border-color .16s;
+  z-index:10;
+}
+.sound-toggle:active{transform:scale(.92)}
+.sound-toggle.muted{color:#5c6675;border-color:var(--line)}
 
 .topbar{display:flex;align-items:center;gap:8px;padding:4px 0 14px;position:relative}
 .topbar h2{margin:0;font-size:16px;font-weight:700;flex:1;text-align:center}
@@ -350,14 +403,32 @@ body{
 <div class="app">
 
   <section class="screen active" id="s-home">
-    <div class="hero">
-      <div class="logo">
-        <span class="brain">🧠</span>
-        <span>ذهن‌آور</span>
+    <div style="position:relative">
+      <button class="sound-toggle" id="soundToggle" title="قطع/وصل صدا">🔊</button>
+      <div class="hero">
+        <div class="logo">
+          <span class="brain">🧠</span>
+          <span>ذهن‌آور</span>
+        </div>
+        <div class="subtitle">۸ بازی کوچک برای ورزش ذهن</div>
+        <div class="brand-en">Zehn-Avar</div>
+        <div class="brand-tag">Anti AI Game Eitaa</div>
       </div>
-      <div class="subtitle">۸ بازی کوچک برای ورزش ذهن</div>
-      <div class="brand-en">Zehn-Avar</div>
-      <div class="brand-tag">Anti AI Game Eitaa</div>
+    </div>
+
+    <!-- ====== متن شروع خلاقانه ====== -->
+    <div class="welcome">
+      <h3>🧠 ای ذهن خواب‌آلود! بیدار شو!</h3>
+      <p>
+        اینجا قرار نیست فقط جواب بدی...<br>
+        قراره <b>حافظه‌ت بترکه</b> 💥، <b>تمرکزت تیز بشه</b> 🎯،<br>
+        و <b>سرعت فکرت از هوش مصنوعی جلو بزنه</b> 🤖💨
+      </p>
+      <span class="hl">
+        🇮🇷 ایران رو می‌شناسیم، ذهنمون رو می‌سازیم.<br>
+        ✅ پاسخ درست = امتیاز + کانفتی 🎉<br>
+        ❌ پاسخ غلط = یه نکته‌ی تازه یاد می‌گیری 📚
+      </span>
     </div>
 
     <div class="score-banner" id="scoreBanner">
@@ -485,6 +556,93 @@ function shuffle(arr){
 }
 
 /* ============================================================
+   🎵 صداهای خیلی سبک (Web Audio API — بدون فایل خارجی)
+============================================================ */
+let audioCtx = null;
+let soundEnabled = true;
+
+const SOUND_KEY = 'zehn_avar_sound_v1';
+try {
+  const saved = localStorage.getItem(SOUND_KEY);
+  if(saved === 'off') soundEnabled = false;
+} catch(e){}
+
+function initAudio(){
+  if(audioCtx) return audioCtx;
+  try {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  } catch(e){
+    console.warn('Audio not supported', e);
+  }
+  return audioCtx;
+}
+
+/* پخش یک تُن کوتاه — لایت و سریع */
+function playTone({freq=440, type='sine', dur=0.08, vol=0.05, slideTo=null}){
+  if(!soundEnabled) return;
+  const ctx = initAudio();
+  if(!ctx) return;
+  if(ctx.state === 'suspended') ctx.resume();
+
+  try {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = type;
+    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+    if(slideTo){
+      osc.frequency.exponentialRampToValueAtTime(slideTo, ctx.currentTime + dur);
+    }
+
+    gain.gain.setValueAtTime(0, ctx.currentTime);
+    gain.gain.linearRampToValueAtTime(vol, ctx.currentTime + 0.008);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + dur);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start(ctx.currentTime);
+    osc.stop(ctx.currentTime + dur + 0.02);
+  } catch(e){ /* silent */ }
+}
+
+/* ۱. صدای کلیک — خیلی کوتاه و نرم */
+function soundClick(){
+  playTone({ freq: 700, type: 'sine', dur: 0.045, vol: 0.03, slideTo: 500 });
+}
+
+/* ۲. صدای درست — دو نت شاد و صعودی */
+function soundCorrect(){
+  if(!soundEnabled) return;
+  playTone({ freq: 880, type: 'sine', dur: 0.09, vol: 0.045 });
+  setTimeout(() => {
+    playTone({ freq: 1320, type: 'sine', dur: 0.12, vol: 0.045 });
+  }, 70);
+}
+
+/* ۳. صدای اشتباه — یک نت پایین و کوتاه */
+function soundWrong(){
+  playTone({ freq: 220, type: 'triangle', dur: 0.18, vol: 0.045, slideTo: 140 });
+}
+
+/* دکمه صدا */
+function updateSoundBtn(){
+  const btn = $('#soundToggle');
+  if(!btn) return;
+  btn.textContent = soundEnabled ? '🔊' : '🔇';
+  btn.classList.toggle('muted', !soundEnabled);
+}
+function toggleSound(){
+  soundEnabled = !soundEnabled;
+  try { localStorage.setItem(SOUND_KEY, soundEnabled ? 'on' : 'off'); } catch(e){}
+  updateSoundBtn();
+  if(soundEnabled){
+    initAudio();
+    soundClick();
+  }
+}
+
+/* ============================================================
    ذخیره‌سازی امتیاز
 ============================================================ */
 const STORAGE_KEY = 'zehn_avar_user_v1';
@@ -578,7 +736,7 @@ function updateGameMenuBadges(){
 }
 
 /* ============================================================
-   افکت‌ها
+   افکت کانفتی
 ============================================================ */
 const CONFETTI_COLORS = ['#f37f00','#ffb84d','#ffd88a','#22c55e','#3b82f6','#ef4444','#a855f7','#facc15','#06b6d4'];
 const CONFETTI_SHAPES = ['■','●','▲','★','◆'];
@@ -773,167 +931,34 @@ const PROVERBS = [
   {q:'سنگ بزرگ ...',            a:'علامت نزدن است',         f:'کنایه از اینکه تهدید بزرگ نشانه عمل نکردن است.'}
 ];
 
-/* ============================================================
-   بازی ۸: سؤالات حرم‌شناسی — نسخه اصلاح‌شده
-   پاسخ‌ها هم‌جنس و مرتبط هستند تا گزینه‌های نادرست هم منطقی باشند
-============================================================ */
+/* بازی ۸: حرم‌شناسی — با پاسخ‌های هم‌جنس */
 const HARAM = [
-  {
-    n:'حرم امام رضا (ع) در کدام شهر قرار دارد؟',
-    c:'مشهد',
-    t:'جغرافیا',
-    f:'حرم امام رضا (ع) در قلب شهر مشهد، مرکز استان خراسان رضوی، قرار دارد.'
-  },
-  {
-    n:'مدفن امام رضا (ع) در کدام شهر است؟',
-    c:'مشهد',
-    t:'مبانی',
-    f:'علی بن موسی الرضا (ع)، امام هشتم شیعیان، در مشهد به خاک سپرده شده است.'
-  },
-  {
-    n:'حرم امام رضا (ع) در کدام استان ایران است؟',
-    c:'خراسان رضوی',
-    t:'جغرافیا',
-    f:'مشهد مرکز استان خراسان رضوی و بزرگ‌ترین شهر مذهبی ایران است.'
-  },
-  {
-    n:'گنبد حرم امام رضا (ع) از چه جنسی است؟',
-    c:'طلا',
-    t:'گنبد',
-    f:'گنبد طلای حرم امام رضا (ع) بلندترین گنبد طلای جهان اسلام است.'
-  },
-  {
-    n:'گنبد حرم امام رضا (ع) در کدام دوره طلاکاری شد؟',
-    c:'دوره صفویه',
-    t:'تاریخ',
-    f:'گنبد حرم در دوره صفویه طلاکاری شد و بعدها در دوره‌های مختلف مرمت شد.'
-  },
-  {
-    n:'صحن انقلاب حرم امام رضا (ع) در کدام دوره ساخته شد؟',
-    c:'دوره صفویه',
-    t:'تاریخ',
-    f:'صحن انقلاب یا صحن عتیق، قدیمی‌ترین صحن حرم است که در دوره صفویه ساخته شد.'
-  },
-  {
-    n:'صحن آزادی حرم امام رضا (ع) در کدام دوره ساخته شد؟',
-    c:'دوره قاجار',
-    t:'تاریخ',
-    f:'صحن آزادی (صحن نو) به دستور فتحعلی‌شاه قاجار ساخته شد.'
-  },
-  {
-    n:'بزرگ‌ترین صحن حرم امام رضا (ع) کدام است؟',
-    c:'صحن جامع رضوی',
-    t:'صحن',
-    f:'صحن جامع رضوی با مساحت حدود ۷۰ هزار متر مربع، بزرگ‌ترین صحن حرم است.'
-  },
-  {
-    n:'کدام صحن حرم امام رضا (ع) مخصوص بانوان است؟',
-    c:'صحن کوثر',
-    t:'صحن',
-    f:'صحن کوثر در ضلع شرقی حرم قرار دارد و مخصوص خواهران است.'
-  },
-  {
-    n:'کدام صحن حرم امام رضا (ع) در ضلع غربی قرار دارد؟',
-    c:'صحن غدیر',
-    t:'صحن',
-    f:'صحن غدیر در ضلع غربی حرم و از صحن‌های جدیدتر است.'
-  },
-  {
-    n:'قدیمی‌ترین صحن حرم امام رضا (ع) چه نام دارد؟',
-    c:'صحن انقلاب (عتیق)',
-    t:'صحن',
-    f:'صحن انقلاب یا عتیق، هسته اولیه حرم و قدیمی‌ترین صحن آن است.'
-  },
-  {
-    n:'حرم امام رضا (ع) چند صحن اصلی دارد؟',
-    c:'بیش از ۱۰ صحن',
-    t:'صحن',
-    f:'حرم امام رضا (ع) دارای صحن‌های متعدد از جمله انقلاب، آزادی، جامع رضوی، کوثر، غدیر و هدایت است.'
-  },
-  {
-    n:'ساعت معروف حرم امام رضا (ع) هدیه چه کسی است؟',
-    c:'ناصرالدین‌شاه قاجار',
-    t:'تاریخ',
-    f:'ساعت بزرگ حرم از هدایای ناصرالدین‌شاه قاجار است.'
-  },
-  {
-    n:'بست شیخ طوسی در حرم امام رضا (ع) به نام چه کسی است؟',
-    c:'شیخ طوسی، عالم بزرگ شیعه',
-    t:'بست',
-    f:'بست شیخ طوسی به نام شیخ طوسی، از علمای بزرگ شیعه و صاحب کتاب تهذیب‌الاحکام، نام‌گذاری شده است.'
-  },
-  {
-    n:'رواق دارالرحمه در حرم امام رضا (ع) محل دفن چه کسی است؟',
-    c:'شیخ طبرسی',
-    t:'رواق',
-    f:'رواق دارالرحمه در ضلع شرقی حرم و محل دفن شیخ طبرسی، صاحب تفسیر مجمع‌البیان، است.'
-  },
-  {
-    n:'رواق دارالولایه در کدام ضلع حرم امام رضا (ع) قرار دارد؟',
-    c:'ضلع شمالی روضه منوره',
-    t:'رواق',
-    f:'دارالولایه از قدیمی‌ترین رواق‌های حرم و در ضلع شمالی روضه منوره قرار دارد.'
-  },
-  {
-    n:'رواق دارالشفا در حرم امام رضا (ع) چه کاربردی دارد؟',
-    c:'محل توسل بیماران برای شفا',
-    t:'رواق',
-    f:'دارالشفا از قدیم محل توسل بیماران به امام رضا (ع) بوده است.'
-  },
-  {
-    n:'رواق دارالذکر در حرم امام رضا (ع) مخصوص چیست؟',
-    c:'زیارت و ذکر',
-    t:'رواق',
-    f:'دارالذکر رواقی زیبا با فضایی آرام برای عبادت و ذکر است.'
-  },
-  {
-    n:'ایوان طلای معروف حرم امام رضا (ع) در کدام صحن قرار دارد؟',
-    c:'صحن آزادی (صحن نو)',
-    t:'ایوان',
-    f:'ایوان طلای صحن آزادی از شاهکارهای معماری اسلامی و رو به قبله است.'
-  },
-  {
-    n:'موزه حرم امام رضا (ع) در کدام صحن قرار دارد؟',
-    c:'صحن کوثر',
-    t:'موزه',
-    f:'موزه حرم مطهر رضوی در صحن کوثر قرار دارد و اشیای نفیس تاریخی و هدایای زائران را نگهداری می‌کند.'
-  },
-  {
-    n:'کتابخانه آستان قدس رضوی چه ویژگی خاصی دارد؟',
-    c:'بیش از ۱۰۰ هزار نسخه خطی',
-    t:'فرهنگی',
-    f:'کتابخانه آستان قدس رضوی یکی از غنی‌ترین کتابخانه‌های نسخ خطی جهان اسلام است.'
-  },
-  {
-    n:'دارالقرآن کریم در حرم امام رضا (ع) چه نقشی دارد؟',
-    c:'آموزش و حفظ قرآن',
-    t:'فرهنگی',
-    f:'دارالقرآن کریم از مراکز مهم قرآنی جهان اسلام در جوار حرم رضوی است.'
-  },
-  {
-    n:'مهمانسرای حضرت رضا (ع) چه خدمتی ارائه می‌دهد؟',
-    c:'پذیرایی از زائران',
-    t:'خدماتی',
-    f:'مهمانسرای حضرت رضا (ع) روزانه از هزاران زائر با غذا و اقامت پذیرایی می‌کند.'
-  },
-  {
-    n:'گلدسته‌های حرم امام رضا (ع) از چه جنسی هستند؟',
-    c:'طلا',
-    t:'گلدسته',
-    f:'گلدسته‌های طلای حرم در دو طرف گنبد قرار دارند و از شاهکارهای معماری اسلامی هستند.'
-  },
-  {
-    n:'مساحت تقریبی صحن جامع رضوی چقدر است؟',
-    c:'حدود ۷۰ هزار متر مربع',
-    t:'صحن',
-    f:'صحن جامع رضوی بزرگ‌ترین صحن حرم امام رضا (ع) با مساحت حدود ۷۰ هزار متر مربع است.'
-  },
-  {
-    n:'حرم امام رضا (ع) چند گلدسته طلا دارد؟',
-    c:'دو گلدسته',
-    t:'گلدسته',
-    f:'حرم امام رضا (ع) دو گلدسته طلا در دو طرف گنبد دارد.'
-  }
+  {n:'حرم امام رضا (ع) در کدام شهر قرار دارد؟', c:'مشهد', t:'جغرافیا', f:'حرم امام رضا (ع) در قلب شهر مشهد، مرکز استان خراسان رضوی، قرار دارد.'},
+  {n:'مدفن امام رضا (ع) در کدام شهر است؟', c:'مشهد', t:'مبانی', f:'علی بن موسی الرضا (ع)، امام هشتم شیعیان، در مشهد به خاک سپرده شده است.'},
+  {n:'حرم امام رضا (ع) در کدام استان ایران است؟', c:'خراسان رضوی', t:'جغرافیا', f:'مشهد مرکز استان خراسان رضوی و بزرگ‌ترین شهر مذهبی ایران است.'},
+  {n:'گنبد حرم امام رضا (ع) از چه جنسی است؟', c:'طلا', t:'گنبد', f:'گنبد طلای حرم امام رضا (ع) بلندترین گنبد طلای جهان اسلام است.'},
+  {n:'گنبد حرم امام رضا (ع) در کدام دوره طلاکاری شد؟', c:'دوره صفویه', t:'تاریخ', f:'گنبد حرم در دوره صفویه طلاکاری شد و بعدها در دوره‌های مختلف مرمت شد.'},
+  {n:'صحن انقلاب حرم امام رضا (ع) در کدام دوره ساخته شد؟', c:'دوره صفویه', t:'تاریخ', f:'صحن انقلاب یا صحن عتیق، قدیمی‌ترین صحن حرم است که در دوره صفویه ساخته شد.'},
+  {n:'صحن آزادی حرم امام رضا (ع) در کدام دوره ساخته شد؟', c:'دوره قاجار', t:'تاریخ', f:'صحن آزادی (صحن نو) به دستور فتحعلی‌شاه قاجار ساخته شد.'},
+  {n:'بزرگ‌ترین صحن حرم امام رضا (ع) کدام است؟', c:'صحن جامع رضوی', t:'صحن', f:'صحن جامع رضوی با مساحت حدود ۷۰ هزار متر مربع، بزرگ‌ترین صحن حرم است.'},
+  {n:'کدام صحن حرم امام رضا (ع) مخصوص بانوان است؟', c:'صحن کوثر', t:'صحن', f:'صحن کوثر در ضلع شرقی حرم قرار دارد و مخصوص خواهران است.'},
+  {n:'کدام صحن حرم امام رضا (ع) در ضلع غربی قرار دارد؟', c:'صحن غدیر', t:'صحن', f:'صحن غدیر در ضلع غربی حرم و از صحن‌های جدیدتر است.'},
+  {n:'قدیمی‌ترین صحن حرم امام رضا (ع) چه نام دارد؟', c:'صحن انقلاب (عتیق)', t:'صحن', f:'صحن انقلاب یا عتیق، هسته اولیه حرم و قدیمی‌ترین صحن آن است.'},
+  {n:'حرم امام رضا (ع) چند صحن اصلی دارد؟', c:'بیش از ۱۰ صحن', t:'صحن', f:'حرم امام رضا (ع) دارای صحن‌های متعدد از جمله انقلاب، آزادی، جامع رضوی، کوثر، غدیر و هدایت است.'},
+  {n:'ساعت معروف حرم امام رضا (ع) هدیه چه کسی است؟', c:'ناصرالدین‌شاه قاجار', t:'تاریخ', f:'ساعت بزرگ حرم از هدایای ناصرالدین‌شاه قاجار است.'},
+  {n:'بست شیخ طوسی در حرم امام رضا (ع) به نام چه کسی است؟', c:'شیخ طوسی، عالم بزرگ شیعه', t:'بست', f:'بست شیخ طوسی به نام شیخ طوسی، از علمای بزرگ شیعه، نام‌گذاری شده است.'},
+  {n:'رواق دارالرحمه در حرم امام رضا (ع) محل دفن چه کسی است؟', c:'شیخ طبرسی', t:'رواق', f:'رواق دارالرحمه در ضلع شرقی حرم و محل دفن شیخ طبرسی، صاحب تفسیر مجمع‌البیان، است.'},
+  {n:'رواق دارالولایه در کدام ضلع حرم امام رضا (ع) قرار دارد؟', c:'ضلع شمالی روضه منوره', t:'رواق', f:'دارالولایه از قدیمی‌ترین رواق‌های حرم و در ضلع شمالی روضه منوره قرار دارد.'},
+  {n:'رواق دارالشفا در حرم امام رضا (ع) چه کاربردی دارد؟', c:'محل توسل بیماران برای شفا', t:'رواق', f:'دارالشفا از قدیم محل توسل بیماران به امام رضا (ع) بوده است.'},
+  {n:'رواق دارالذکر در حرم امام رضا (ع) مخصوص چیست؟', c:'زیارت و ذکر', t:'رواق', f:'دارالذکر رواقی زیبا با فضایی آرام برای عبادت و ذکر است.'},
+  {n:'ایوان طلای معروف حرم امام رضا (ع) در کدام صحن قرار دارد؟', c:'صحن آزادی (صحن نو)', t:'ایوان', f:'ایوان طلای صحن آزادی از شاهکارهای معماری اسلامی و رو به قبله است.'},
+  {n:'موزه حرم امام رضا (ع) در کدام صحن قرار دارد؟', c:'صحن کوثر', t:'موزه', f:'موزه حرم مطهر رضوی در صحن کوثر قرار دارد و اشیای نفیس تاریخی را نگهداری می‌کند.'},
+  {n:'کتابخانه آستان قدس رضوی چه ویژگی خاصی دارد؟', c:'بیش از ۱۰۰ هزار نسخه خطی', t:'فرهنگی', f:'کتابخانه آستان قدس رضوی یکی از غنی‌ترین کتابخانه‌های نسخ خطی جهان اسلام است.'},
+  {n:'دارالقرآن کریم در حرم امام رضا (ع) چه نقشی دارد؟', c:'آموزش و حفظ قرآن', t:'فرهنگی', f:'دارالقرآن کریم از مراکز مهم قرآنی جهان اسلام در جوار حرم رضوی است.'},
+  {n:'مهمانسرای حضرت رضا (ع) چه خدمتی ارائه می‌دهد؟', c:'پذیرایی از زائران', t:'خدماتی', f:'مهمانسرای حضرت رضا (ع) روزانه از هزاران زائر با غذا و اقامت پذیرایی می‌کند.'},
+  {n:'گلدسته‌های حرم امام رضا (ع) از چه جنسی هستند؟', c:'طلا', t:'گلدسته', f:'گلدسته‌های طلای حرم در دو طرف گنبد قرار دارند و از شاهکارهای معماری اسلامی هستند.'},
+  {n:'مساحت تقریبی صحن جامع رضوی چقدر است؟', c:'حدود ۷۰ هزار متر مربع', t:'صحن', f:'صحن جامع رضوی بزرگ‌ترین صحن حرم امام رضا (ع) با مساحت حدود ۷۰ هزار متر مربع است.'},
+  {n:'حرم امام رضا (ع) چند گلدسته طلا دارد؟', c:'دو گلدسته', t:'گلدسته', f:'حرم امام رضا (ع) دو گلدسته طلا در دو طرف گنبد دارد.'}
 ];
 
 /* ============================================================
@@ -949,18 +974,16 @@ let currentGame = null;
 let currentLevel = 0;
 
 /* ============================================================
-   سازنده گزینه‌ها (برای حرم، از مجموعه پاسخ‌های هم‌جنس)
+   سازنده گزینه‌ها
 ============================================================ */
 function buildOptions(correct, pool, count){
   const distractors = shuffle(pool.filter(v => v !== correct)).slice(0, count - 1);
   return shuffle([correct, ...distractors]).map(v => ({ label:v, correct: v === correct }));
 }
 
-/* برای حرم‌شناسی: گزینه‌های نادرست را از پاسخ‌های هم‌دسته انتخاب می‌کنیم */
+/* برای حرم‌شناسی: گزینه‌های نادرست از پاسخ‌های هم‌دسته انتخاب می‌شوند */
 function buildHaramOptions(correct, category, count){
-  // همه پاسخ‌های همان دسته
   const sameCat = HARAM.filter(q => q.t === category).map(q => q.c);
-  // اگر تعداد کافی در همان دسته نبود، از دسته‌های دیگر هم اضافه کن
   let pool = uniq([...sameCat, ...HARAM.map(q => q.c)]);
   const distractors = shuffle(pool.filter(v => v !== correct)).slice(0, count - 1);
   return shuffle([correct, ...distractors]).map(v => ({ label:v, correct: v === correct }));
@@ -1261,6 +1284,8 @@ function startQuiz(host, questions, opts = {}){
     function answer(idx, evt){
       if(locked) return;
       locked = true;
+      soundClick();  /* 🎵 صدای کلیک */
+
       const nodes = [...optsEl.children];
 
       nodes.forEach((el, k) => {
@@ -1280,6 +1305,7 @@ function startQuiz(host, questions, opts = {}){
         score += gain;
         correct++;
         qcard.classList.add('win');
+        soundCorrect();  /* 🎵 صدای درست */
 
         let cx = window.innerWidth / 2;
         let cy = window.innerHeight / 2;
@@ -1293,6 +1319,7 @@ function startQuiz(host, questions, opts = {}){
       } else {
         streak = 0;
         qcard.classList.add('lose');
+        soundWrong();  /* 🎵 صدای اشتباه */
       }
 
       const delay = right ? DELAY_OK : DELAY_BAD;
@@ -1356,7 +1383,10 @@ function showLevelPicker(gameKey){
       </div>` : ''}`;
 
   host.querySelectorAll('[data-lv]').forEach(btn => {
-    btn.addEventListener('click', () => startGame(gameKey, parseInt(btn.dataset.lv, 10)));
+    btn.addEventListener('click', () => {
+      soundClick();
+      startGame(gameKey, parseInt(btn.dataset.lv, 10));
+    });
   });
 
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -1394,7 +1424,10 @@ function startGame(gameKey, level){
 }
 
 $('#lvlBtn').addEventListener('click', () => {
-  if(currentGame) showLevelPicker(currentGame);
+  if(currentGame){
+    soundClick();
+    showLevelPicker(currentGame);
+  }
 });
 
 /* ============================================================
@@ -1413,10 +1446,13 @@ function go(name){
 
 document.addEventListener('click', e => {
   const back = e.target.closest('[data-go]');
-  if(back){ go(back.dataset.go); return; }
+  if(back){ soundClick(); go(back.dataset.go); return; }
 
   const gm = e.target.closest('[data-game]');
-  if(gm){ showLevelPicker(gm.dataset.game); }
+  if(gm){ soundClick(); showLevelPicker(gm.dataset.game); }
+
+  const btn = e.target.closest('.btn');
+  if(btn) soundClick();
 });
 
 /* ============================================================
@@ -1426,7 +1462,14 @@ loadUser();
 renderGameMenu();
 updateHomeUI();
 updateGameMenuBadges();
+updateSoundBtn();
+
 $('#resetScore').addEventListener('click', resetUser);
+$('#soundToggle').addEventListener('click', toggleSound);
+
+/* فعال‌سازی AudioContext بعد از اولین کلیک کاربر (سیاست مرورگرها) */
+document.addEventListener('touchstart', () => initAudio(), {once:true, passive:true});
+document.addEventListener('mousedown',  () => initAudio(), {once:true});
 </script>
 </body>
 </html>
