@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+<meta name="theme-color" content="#f37f00"/>
+<title>🇮🇷 ذهن‌آور — Zehn-Avar | Anti AI Game Eitaa</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0d10;--card:#141a21;--card2:#1b232c;--line:#232d38;
+  --txt:#e8eef5;--muted:#8b97a6;
+  --accent:#f37f00;--accent-2:#ffb84d;--accent-dark:#c96600;
+  --glow:rgba(243,127,0,.14);--ok:#22c55e;--bad:#ef4444;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;min-height:100dvh;color:var(--txt);
+  font-family:'Vazirmatn',Tahoma,system-ui,-apple-system,sans-serif;
+  background:
+    radial-gradient(900px 520px at 100% -10%,rgba(243,127,0,.16),transparent 62%),
+    radial-gradient(700px 460px at -10% 105%,rgba(255,184,77,.08),transparent 62%),
+    var(--bg);
+  background-attachment:fixed;-webkit-font-smoothing:antialiased;
+  touch-action:manipulation;overflow-x:hidden;
+}
+.app{
+  max-width:480px;margin:0 auto;
+  padding:calc(18px + env(safe-area-inset-top)) 16px calc(30px + env(safe-area-inset-bottom));
+}
+.screen{display:none}
+.screen.active{display:block;animation:rise .28s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+#confetti-layer{position:fixed;inset:0;pointer-events:none;z-index:9999;overflow:hidden}
+.confetti-piece{
+  position:absolute;width:10px;height:10px;border-radius:2px;
+  will-change:transform,opacity;
+  animation:confettiFall var(--dur,1600ms) cubic-bezier(.16,.62,.32,1) forwards;
+}
+@keyframes confettiFall{
+  0%{transform:translate3d(0,0,0) rotate(0deg) scale(1);opacity:1}
+  100%{transform:translate3d(var(--tx,0),var(--ty,600px),0) rotate(var(--rot,720deg)) scale(.3);opacity:0}
+}
+.flash-ok{
+  position:fixed;inset:0;pointer-events:none;z-index:9998;
+  background:radial-gradient(circle at center,rgba(34,197,94,.22),transparent 65%);
+  animation:flashOk .55s ease-out forwards;
+}
+@keyframes flashOk{from{opacity:.9}to{opacity:0}}
+
+.hero{padding:22px 4px 14px;text-align:center}
+.logo{
+  font-size:36px;font-weight:800;letter-spacing:-.5px;line-height:1.25;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  background:linear-gradient(90deg,#f37f00,#ffb84d 55%,#ffd88a);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.logo .brain{
+  font-size:34px;
+  -webkit-text-fill-color:initial;
+  filter:drop-shadow(0 2px 8px rgba(243,127,0,.4));
+}
+.subtitle{margin-top:8px;font-size:14.5px;font-weight:700;color:var(--accent-2);line-height:1.7}
+.brand-en{margin-top:6px;font-size:12.5px;font-weight:700;color:var(--muted);letter-spacing:3px;text-transform:uppercase;direction:ltr}
+.brand-tag{margin-top:3px;font-size:10px;color:var(--muted);letter-spacing:2px;direction:ltr}
+
+.score-banner{
+  margin:12px 0 4px;padding:13px 16px;border-radius:18px;
+  background:linear-gradient(135deg,rgba(243,127,0,.16),rgba(243,127,0,.03));
+  border:1px solid rgba(243,127,0,.42);
+  display:flex;align-items:center;gap:12px;
+  animation:rise .35s ease both;
+}
+.score-banner .sb-ico{
+  flex:0 0 42px;height:42px;border-radius:13px;
+  display:grid;place-items:center;font-size:21px;
+  background:linear-gradient(180deg,#f37f00,#c96600);
+  color:#241000;box-shadow:0 4px 12px rgba(243,127,0,.32);
+}
+.score-banner .sb-body{flex:1;min-width:0}
+.score-banner .sb-body b{display:block;font-size:13.5px;font-weight:800;color:var(--accent-2);margin-bottom:3px}
+.score-banner .sb-body small{display:block;color:#c9d3de;font-size:11.5px;line-height:1.7}
+.score-banner .sb-score{flex:0 0 auto;font-size:22px;font-weight:800;color:var(--accent);line-height:1;direction:ltr}
+.score-banner .sb-score small{font-size:10px;display:block;color:var(--muted);text-align:center;margin-top:3px;font-weight:600}
+
+.edu{
+  margin:14px 0 16px;border-radius:20px;
+  background:linear-gradient(180deg,rgba(243,127,0,.09),rgba(243,127,0,.02));
+  border:1px solid rgba(243,127,0,.28);overflow:hidden;transition:border-color .2s;
+}
+.edu[open]{border-color:rgba(243,127,0,.55)}
+.edu summary{
+  list-style:none;cursor:pointer;display:flex;align-items:center;gap:12px;
+  padding:14px 16px;font-weight:700;font-size:14.5px;
+  color:var(--accent-2);user-select:none;-webkit-tap-highlight-color:transparent;
+}
+.edu summary::-webkit-details-marker{display:none}
+.edu summary .eico{
+  flex:0 0 34px;height:34px;border-radius:11px;
+  display:grid;place-items:center;font-size:17px;
+  background:rgba(243,127,0,.15);border:1px solid rgba(243,127,0,.3);
+}
+.edu summary .etxt{flex:1;line-height:1.55}
+.edu summary .etxt small{display:block;font-weight:400;color:var(--muted);font-size:11.5px;margin-top:2px}
+.edu summary .earrow{color:var(--accent);font-size:20px;line-height:1;transition:transform .25s ease}
+.edu[open] summary .earrow{transform:rotate(-90deg)}
+.edu-body{padding:2px 16px 18px;animation:rise .28s ease both}
+.edu-body p{margin:0 0 12px;font-size:13px;line-height:2.05;color:#c9d3de;text-align:justify}
+.edu-body p:last-child{margin-bottom:0}
+.edu-body b{color:var(--accent-2)}
+.edu-body .hl{
+  display:block;margin:14px 0;padding:12px 14px;border-radius:14px;
+  background:rgba(243,127,0,.08);border-right:3px solid var(--accent);
+  font-size:12.5px;line-height:2;color:#d6dee7;
+}
+.edu-list{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-direction:column;gap:9px}
+.edu-list li{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.95;color:#c9d3de}
+.edu-list li .bul{
+  flex:0 0 22px;height:22px;border-radius:7px;display:grid;place-items:center;font-size:12px;
+  background:rgba(243,127,0,.13);border:1px solid rgba(243,127,0,.25);color:var(--accent-2);
+}
+.edu-list li span:last-child{flex:1}
+
+.menu-title{display:flex;align-items:center;gap:10px;margin:6px 0 12px;font-size:13px;color:var(--muted)}
+.menu-title::before,.menu-title::after{content:'';flex:1;height:1px;background:var(--line)}
+.menu{display:grid;grid-template-columns:1fr;gap:11px}
+.mcard{
+  display:flex;align-items:center;gap:13px;padding:14px;border-radius:18px;
+  background:linear-gradient(180deg,var(--card),#11161c);
+  border:1px solid var(--line);color:var(--txt);font:inherit;text-align:right;cursor:pointer;
+  transition:transform .14s ease,border-color .18s ease;position:relative;
+}
+.mcard:active{transform:scale(.985);border-color:rgba(243,127,0,.6)}
+.mcard.holy{
+  background:linear-gradient(180deg,rgba(34,197,94,.10),rgba(34,197,94,.02)),linear-gradient(180deg,var(--card),#11161c);
+  border-color:rgba(34,197,94,.35);
+}
+.mcard.holy:active{border-color:rgba(34,197,94,.7)}
+.mnum{
+  flex:0 0 26px;height:26px;border-radius:8px;display:grid;place-items:center;
+  background:linear-gradient(180deg,var(--accent),var(--accent-dark));
+  color:#241000;font-size:12.5px;font-weight:800;
+  box-shadow:0 2px 8px rgba(243,127,0,.28);
+}
+.mcard.holy .mnum{background:linear-gradient(180deg,#22c55e,#15803d);color:#031a0c;box-shadow:0 2px 8px rgba(34,197,94,.32)}
+.mico{
+  flex:0 0 44px;height:44px;border-radius:13px;display:grid;place-items:center;
+  font-size:21px;background:var(--card2);border:1px solid var(--line);
+}
+.mbody{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0}
+.mbody b{font-size:15px;font-weight:700}
+.mbody small{color:var(--muted);font-size:12px;line-height:1.65}
+.marrow{color:#4c5867;font-size:22px;line-height:1}
+.mcard .mstar{
+  position:absolute;top:9px;left:12px;
+  font-size:11px;color:var(--accent-2);
+  background:rgba(243,127,0,.14);
+  border:1px solid rgba(243,127,0,.32);
+  border-radius:999px;padding:2px 8px;font-weight:700;
+}
+
+.channel-end{
+  margin:22px 0 6px;border-radius:22px;
+  background:
+    linear-gradient(135deg,rgba(243,127,0,.18),rgba(243,127,0,.03)),
+    radial-gradient(400px 120px at 90% 0%,rgba(255,184,77,.16),transparent 70%);
+  border:1px solid rgba(243,127,0,.48);overflow:hidden;position:relative;
+}
+.channel-end::before{
+  content:'';position:absolute;top:0;right:0;left:0;height:3px;
+  background:linear-gradient(90deg,transparent,var(--accent),var(--accent-2),transparent);
+  opacity:.7;
+}
+.channel-end-inner{padding:18px 18px 16px;display:flex;flex-direction:column;gap:12px;position:relative;z-index:1}
+.channel-end-head{display:flex;align-items:center;gap:12px}
+.channel-end-head .chico{
+  flex:0 0 50px;height:50px;border-radius:16px;display:grid;place-items:center;font-size:24px;
+  background:linear-gradient(180deg,#f37f00,#c96600);color:#241000;
+  box-shadow:0 6px 18px rgba(243,127,0,.45);
+}
+.channel-end-head .chbody{flex:1;min-width:0}
+.channel-end-head .chbody b{display:block;font-size:16px;font-weight:800;color:var(--accent-2);margin-bottom:3px}
+.channel-end-head .chbody small{display:block;color:var(--muted);font-size:11.5px;line-height:1.6;direction:ltr;text-align:left;word-break:break-all}
+.channel-end-btn{
+  display:flex;align-items:center;justify-content:center;gap:8px;padding:13px;border-radius:14px;
+  background:linear-gradient(180deg,#f37f00,#d96a00);color:#241000;
+  font-weight:800;font-size:14.5px;text-decoration:none;transition:transform .12s;
+  box-shadow:0 4px 16px rgba(243,127,0,.32);
+}
+.channel-end-btn:active{transform:scale(.98)}
+.channel-end-btn .arr{font-size:18px;line-height:1}
+
+.foot{margin-top:18px;text-align:center;color:#5c6675;font-size:11px;line-height:2.1}
+.foot .reset-btn{
+  background:none;border:none;color:#7a8595;
+  font:inherit;font-size:10.5px;cursor:pointer;
+  text-decoration:underline;padding:4px;margin-top:4px;
+}
+.foot .reset-btn:active{color:var(--bad)}
+
+.topbar{display:flex;align-items:center;gap:8px;padding:4px 0 14px;position:relative}
+.topbar h2{margin:0;font-size:16px;font-weight:700;flex:1;text-align:center}
+.back{
+  width:40px;height:40px;border-radius:12px;display:grid;place-items:center;
+  background:var(--card);border:1px solid var(--line);color:var(--txt);
+  font-size:22px;line-height:1;cursor:pointer;padding:0 0 4px;font-family:inherit;
+  transition:transform .12s;
+}
+.back:active{transform:scale(.94)}
+.lvl-corner{
+  width:40px;height:40px;border-radius:12px;display:grid;place-items:center;
+  background:linear-gradient(180deg,rgba(243,127,0,.22),rgba(243,127,0,.08));
+  border:1px solid rgba(243,127,0,.5);color:var(--accent-2);
+  font-size:18px;line-height:1;cursor:pointer;padding:0;font-family:inherit;
+  transition:transform .12s,border-color .16s;position:relative;
+}
+.lvl-corner:active{transform:scale(.94);border-color:var(--accent)}
+.lvl-corner .lvl-dot{
+  position:absolute;top:-3px;left:-3px;min-width:18px;height:18px;border-radius:9px;
+  background:var(--accent);color:#241000;font-size:10.5px;font-weight:800;
+  display:grid;place-items:center;padding:0 5px;border:2px solid var(--bg);
+}
+
+.qhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px;flex-wrap:wrap}
+.pill{
+  font-size:12px;color:var(--muted);background:var(--card);
+  border:1px solid var(--line);padding:6px 12px;border-radius:999px;white-space:nowrap;
+}
+.pill.score{color:var(--accent);border-color:rgba(243,127,0,.35)}
+.pill.lvl{color:var(--accent-2);border-color:rgba(255,184,77,.28)}
+.qcard{
+  background:linear-gradient(180deg,var(--card),#11161c);
+  border:1px solid var(--line);border-radius:22px;
+  padding:22px 18px;text-align:center;margin-bottom:16px;
+  transition:border-color .25s,box-shadow .25s;
+}
+.qcard.win{border-color:rgba(34,197,94,.55);box-shadow:0 0 0 4px rgba(34,197,94,.10),0 8px 28px rgba(34,197,94,.12)}
+.qcard.lose{border-color:rgba(239,68,68,.55);box-shadow:0 0 0 4px rgba(239,68,68,.10)}
+.qtag{
+  display:inline-block;font-size:11px;color:var(--accent);
+  background:var(--glow);border:1px solid rgba(243,127,0,.3);
+  padding:4px 11px;border-radius:999px;margin-bottom:12px;
+}
+.qmain{font-size:20px;font-weight:700;line-height:1.8}
+.qmain b{color:var(--accent)}
+.qsub{margin-top:9px;color:var(--muted);font-size:13px;line-height:1.85}
+.expr{font-size:27px;font-weight:800;letter-spacing:1.5px;display:inline-block}
+
+.opts{display:flex;flex-direction:column;gap:10px}
+.opts.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{
+  width:100%;display:flex;align-items:center;gap:12px;
+  padding:15px 16px;border-radius:16px;
+  background:var(--card);border:1px solid var(--line);
+  color:var(--txt);font:inherit;font-size:15px;font-weight:600;
+  cursor:pointer;text-align:right;
+  transition:transform .12s,border-color .16s,background .16s,opacity .16s;
+}
+.opt:active{transform:scale(.98)}
+.opt .oidx{
+  flex:0 0 26px;height:26px;border-radius:8px;display:grid;place-items:center;
+  background:var(--card2);color:var(--muted);font-size:12px;font-weight:700;
+}
+.opt .otext{flex:1}
+.opt.ok{border-color:var(--ok);background:rgba(34,197,94,.15)}
+.opt.ok .oidx{background:var(--ok);color:#04140a}
+.opt.bad{border-color:var(--bad);background:rgba(239,68,68,.13);animation:shake .32s}
+.opt.bad .oidx{background:var(--bad);color:#1a0505}
+.opt.dim{opacity:.38}
+.opt:disabled{cursor:default}
+.opts.grid2 .opt{justify-content:center;padding:19px 10px;font-size:19px;font-weight:700}
+.opts.grid2 .opt .oidx{display:none}
+@keyframes shake{0%,100%{transform:none}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+.fb{margin-top:14px}
+.fbrow{
+  display:flex;align-items:center;gap:10px;justify-content:space-between;
+  padding:12px 14px;border-radius:16px;font-size:13.5px;
+  border:1px solid var(--line);background:var(--card);animation:rise .2s ease both;
+}
+.fbrow.good{border-color:rgba(34,197,94,.42);background:rgba(34,197,94,.08)}
+.fbrow.bad{border-color:rgba(239,68,68,.42);background:rgba(239,68,68,.08)}
+.fbtxt b{color:var(--accent)}
+.fbrow.bad .fbtxt b{color:#fca5a5}
+.fact{
+  margin-top:10px;font-size:12.5px;line-height:2;color:var(--muted);
+  padding:12px 14px;border-right:2px solid var(--accent);
+  background:rgba(243,127,0,.05);border-radius:0 14px 14px 0;
+  animation:rise .25s ease both;
+}
+.autobar{height:3px;border-radius:99px;background:var(--card2);margin-top:10px;overflow:hidden}
+.autobar i{
+  display:block;height:100%;border-radius:99px;
+  background:linear-gradient(90deg,var(--accent),var(--accent-2));
+  transform-origin:right center;
+  animation:autoshrink var(--adur,1500ms) linear forwards;
+}
+@keyframes autoshrink{from{transform:scaleX(1)}to{transform:scaleX(0)}}
+
+.btn{
+  font:inherit;font-weight:700;cursor:pointer;border-radius:14px;
+  border:1px solid var(--line);background:var(--card2);color:var(--txt);
+  padding:12px 18px;transition:transform .12s;
+}
+.btn:active{transform:scale(.97)}
+.btn.tiny{padding:9px 15px;font-size:13px;background:var(--accent);color:#241000;border-color:transparent}
+.btn.primary{background:linear-gradient(180deg,#f37f00,#d96a00);color:#241000;border-color:transparent}
+.btn.ghost{background:transparent}
+
+.result{text-align:center;padding:28px 20px 24px}
+.rbig{font-size:46px;font-weight:800;color:var(--accent);letter-spacing:-1px;line-height:1.2}
+.rlabel{margin-top:8px;font-size:15px;line-height:1.9;font-weight:600}
+.rbar{height:8px;border-radius:99px;background:var(--card2);margin:18px 0 10px;overflow:hidden}
+.rbar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#f37f00,#ffb84d);transition:width .65s ease}
+.rmeta{color:var(--muted);font-size:13px}
+.rmeta b{color:var(--accent-2)}
+
+.encourage{
+  margin-top:16px;padding:16px 15px;border-radius:18px;
+  font-size:13.5px;line-height:2;text-align:right;
+  border:1px solid rgba(243,127,0,.42);
+  background:linear-gradient(180deg,rgba(243,127,0,.10),rgba(243,127,0,.02));
+  color:#d6dee7;animation:rise .35s ease both;
+}
+.encourage b{color:var(--accent-2)}
+.encourage .emoji{font-size:20px;line-height:1}
+
+.suggest{
+  margin-top:14px;padding:14px;border-radius:16px;
+  font-size:13px;line-height:1.9;
+  border:1px solid rgba(239,68,68,.42);
+  background:rgba(239,68,68,.08);color:#fca5a5;text-align:right;
+}
+.suggest.up{border-color:rgba(34,197,94,.5);background:rgba(34,197,94,.09);color:#86efac}
+.suggest b{color:#fff}
+
+.ractions{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.ractions .btn{flex:1;min-width:120px}
+.auto-badge{color:var(--accent-2);font-weight:400;font-size:11.5px}
+</style>
+</head>
+<body>
+
+<div id="confetti-layer"></div>
+
+<div class="app">
+
+  <section class="screen active" id="s-home">
+    <div class="hero">
+      <div class="logo">
+        <span class="brain">🧠</span>
+        <span>ذهن‌آور</span>
+      </div>
+      <div class="subtitle">۸ بازی کوچک برای ورزش ذهن</div>
+      <div class="brand-en">Zehn-Avar</div>
+      <div class="brand-tag">Anti AI Game Eitaa</div>
+    </div>
+
+    <div class="score-banner" id="scoreBanner">
+      <span class="sb-ico" id="sbIco">✨</span>
+      <span class="sb-body">
+        <b id="sbTitle">اولین قدمت رو بردار!</b>
+        <small id="sbText">امتیازت اینجا ذخیره می‌شه و هر بار بیشتر می‌شه.</small>
+      </span>
+      <span class="sb-score">
+        <span id="sbScore">۰</span>
+        <small>امتیاز</small>
+      </span>
+    </div>
+
+    <details class="edu">
+      <summary>
+        <span class="eico">🧠</span>
+        <span class="etxt">
+          چرا ورزش ذهنی مهم است؟
+          <small>یک دقیقه مطالعه — آموزش و اهمیت بازی</small>
+        </span>
+        <span class="earrow">‹</span>
+      </summary>
+      <div class="edu-body">
+        <p>
+          <b>مغز هم مثل عضله است.</b> همان‌طور که بدن برای سالم ماندن به ورزش نیاز دارد، ذهن هم برای فعال و توانمند ماندن به تمرین مداوم احتیاج دارد. ورزش‌های ذهنی مجموعه‌ای از فعالیت‌هایی هستند که حافظه، تمرکز، سرعت پردازش، حل مسئله و خلاقیت را به چالش می‌کشند.
+        </p>
+
+        <span class="hl">
+          🎯 بازی‌های این برنامه فقط سرگرمی نیستند؛ هر سؤال یک تمرین کوچک برای مغز است. پاسخ دادن سریع، به‌خاطر سپردن اطلاعات، و انتخاب از میان گزینه‌ها، همه به‌صورت همزمان چند بخش از مغز را فعال می‌کنند.
+        </span>
+
+        <p><b>مهم‌ترین فایده‌های پرداختن به ورزش‌های ذهنی:</b></p>
+
+        <ul class="edu-list">
+          <li><span class="bul">۱</span><span><b>تقویت حافظه:</b> یادآوری شهرها، جاذبه‌ها و مشاهیر باعث می‌شود مغز اطلاعات را دسته‌بندی و ذخیره کند؛ مهارتی که در یادگیری روزمره هم به کار می‌آید.</span></li>
+          <li><span class="bul">۲</span><span><b>افزایش تمرکز:</b> وقتی با محدودیت گزینه و زمان روبه‌رو می‌شوی، ذهن یاد می‌گیرد روی موضوع اصلی متمرکز شود و حواس‌پرتی را نادیده بگیرد.</span></li>
+          <li><span class="bul">۳</span><span><b>سرعت پردازش:</b> بازی‌های ریاضی و سطح‌های سخت، سرعت تصمیم‌گیری و محاسبه ذهنی را بالا می‌برند.</span></li>
+          <li><span class="bul">۴</span><span><b>پیشگیری از افت شناختی:</b> پژوهش‌ها نشان می‌دهند فعالیت‌های ذهنی منظم در بزرگسالی، به حفظ سلامت مغز و کاهش خطر افت حافظه کمک می‌کنند.</span></li>
+          <li><span class="bul">۵</span><span><b>افزایش اعتماد به خود:</b> هر پاسخ درست، یک موفقیت کوچک است و ترشح دوپامین، حس انگیزه و شادابی ایجاد می‌کند.</span></li>
+          <li><span class="bul">۶</span><span><b>کاهش استرس:</b> غرق شدن در یک بازی ذهنی، مثل مدیتیشن فعال، ذهن را از نگرانی‌های روزانه دور می‌کند.</span></li>
+          <li><span class="bul">۷</span><span><b>یادگیری مادام‌العمر:</b> آشنایی با فرهنگ، جغرافیا و تاریخ ایران در قالب بازی، یادگیری را ماندگارتر و لذت‌بخش‌تر می‌کند.</span></li>
+        </ul>
+
+        <span class="hl">
+          💡 <b>چطور از این برنامه بیشترین بهره را ببریم؟</b><br>
+          • روزانه ۱۰ تا ۱۵ دقیقه بازی کافی است.<br>
+          • از سطح ساده شروع کن و به‌تدریج سطح را بالا ببر.<br>
+          • اگر در هر سطحی بیشتر از ۵ پاسخ درست بگیری، به‌طور خودکار به سطح بالاتر می‌روی.<br>
+          • بعد از هر پاسخ، «نکته آموزشی» را بخوان؛ همین نکته‌ها هستند که یادگیری را عمیق می‌کنند.
+        </span>
+
+        <p>
+          در نهایت، ورزش ذهنی یک سرمایه‌گذاری بلندمدت روی خودت است. هر دقیقه‌ای که صرف تمرین مغز می‌کنی، در سال‌های آینده به شکل حافظه‌ای قوی‌تر، ذهنی شفاف‌تر و تصمیم‌گیری سریع‌تر به تو بازمی‌گردد. پس همین حالا یک بازی را شروع کن! 🚀
+        </p>
+      </div>
+    </details>
+
+    <div class="menu-title">🎮 بازی‌ها</div>
+
+    <div class="menu" id="gameMenu"></div>
+
+    <div class="channel-end">
+      <div class="channel-end-inner">
+        <div class="channel-end-head">
+          <span class="chico">📡</span>
+          <span class="chbody">
+            <b>کانال فن آور</b>
+            <small>eitaa.com/fanavar_ir</small>
+          </span>
+        </div>
+        <a class="channel-end-btn" href="https://eitaa.com/fanavar_ir" target="_blank" rel="noopener noreferrer">
+          <span>🇮🇷 عضویت در کانال ایتا</span>
+          <span class="arr">‹</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="foot">
+      🧠 ذهن‌آور — Zehn-Avar • Anti AI Game Eitaa<br>
+      کاملاً کلاینت‌ساید • بدون سرور • بدون اینترنت<br>
+      <button class="reset-btn" id="resetScore">پاک کردن امتیاز ذخیره‌شده</button>
+    </div>
+  </section>
+
+  <section class="screen" id="s-level">
+    <div class="topbar">
+      <button class="back" data-go="home">‹</button>
+      <h2 id="level-title">انتخاب سطح</h2>
+      <span class="lvl-corner" style="visibility:hidden"></span>
+    </div>
+    <div id="level-stage"></div>
+  </section>
+
+  <section class="screen" id="s-game">
+    <div class="topbar">
+      <button class="back" data-go="home">‹</button>
+      <h2 id="game-title">بازی</h2>
+      <button class="lvl-corner" id="lvlBtn" title="تغییر سطح">
+        <span id="lvlBtnIcon">🌱</span>
+        <span class="lvl-dot" id="lvlBtnDot">۱</span>
+      </button>
+    </div>
+    <div id="game-stage"></div>
+  </section>
+
+</div>
+
+<script>
+/* ============================================================
+   ابزارها
+============================================================ */
+const $  = s => document.querySelector(s);
+const rnd = (a,b) => a + Math.floor(Math.random()*(b-a+1));
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const uniq = a => [...new Set(a)];
+const fa = n => String(n).replace(/[0-9]/g, d => '۰۱۲۳۴۵۶۷۸۹'[+d]);
+function shuffle(arr){
+  const r = arr.slice();
+  for(let i=r.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [r[i],r[j]] = [r[j],r[i]];
+  }
+  return r;
+}
+
+/* ============================================================
+   ذخیره‌سازی امتیاز
+============================================================ */
+const STORAGE_KEY = 'zehn_avar_user_v1';
+let userData = {
+  totalScore:0, gamesPlayed:0, bestStreak:0,
+  totalCorrect:0, totalQuestions:0,
+  perGame:{}, unlockedLevels:{}, lastPlayed:null
+};
+
+function loadUser(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(raw){
+      const parsed = JSON.parse(raw);
+      userData = Object.assign(userData, parsed);
+      if(!userData.perGame) userData.perGame = {};
+      if(!userData.unlockedLevels) userData.unlockedLevels = {};
+    }
+  } catch(e){ console.warn(e); }
+}
+function saveUser(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(userData)); }catch(e){ console.warn(e); }
+}
+function addScore(gameKey, correct, total, score, bestStreak){
+  userData.totalScore += score;
+  userData.gamesPlayed += 1;
+  userData.totalCorrect += correct;
+  userData.totalQuestions += total;
+  userData.bestStreak = Math.max(userData.bestStreak, bestStreak);
+  userData.lastPlayed = Date.now();
+  if(!userData.perGame[gameKey]) userData.perGame[gameKey] = { played:0, score:0, best:0, lastCorrect:0 };
+  const pg = userData.perGame[gameKey];
+  pg.played += 1; pg.score += score;
+  pg.best = Math.max(pg.best, correct);
+  pg.lastCorrect = correct;
+  if(correct > PASS_THRESHOLD){
+    userData.unlockedLevels[gameKey] = Math.min((userData.unlockedLevels[gameKey]||0)+1, 2);
+  }
+  saveUser();
+}
+function resetUser(){
+  if(!confirm('مطمئنی می‌خواهی تمام امتیازها و پیشرفتت پاک شود؟')) return;
+  userData = {
+    totalScore:0, gamesPlayed:0, bestStreak:0,
+    totalCorrect:0, totalQuestions:0,
+    perGame:{}, unlockedLevels:{}, lastPlayed:null
+  };
+  saveUser();
+  updateHomeUI();
+  updateGameMenuBadges();
+}
+
+/* ============================================================
+   پیام‌های تشویقی
+============================================================ */
+function getEncouragement(score){
+  if(score === 0) return { ico:'✨', title:'اولین قدمت رو بردار!', text:'هنوز امتیازی نداری. با یک بازی کوچک شروع کن.' };
+  if(score < 50)  return { ico:'🌱', title:'شروع خوبی بود!', text:'آفرین! هنوز هوش مصنوعی ذهنت رو تخریب نکرده 🤖😄 ادامه بده.' };
+  if(score < 150) return { ico:'💪', title:'داری گرم می‌شی!', text:'مغزت داره ورزش می‌کنه و قوی‌تر می‌شه. چند امتیاز دیگه تا رکورد!' };
+  if(score < 300) return { ico:'⚡', title:'آفرین! فوق‌العاده‌ای', text:'امتیازت داره بالا می‌ره. ذهنت از هوش مصنوعی هم سریع‌تر شده 🚀' };
+  if(score < 500) return { ico:'🔥', title:'تو یک ذهن‌آور واقعی هستی!', text:'بیشتر از نصف راه رو رفتی. حافظه‌ات داره مثل فولاد می‌شه.' };
+  if(score < 800) return { ico:'🏆', title:'قهرمان ذهن!', text:'امتیازت شگفت‌انگیزه. مغزت الان از بسیاری از هوش‌های مصنوعی جلوتره!' };
+  if(score < 1200) return { ico:'👑', title:'استاد بزرگ ذهن!', text:'تو الان یک الگوی ورزش ذهنی هستی. هوش مصنوعی باید از تو یاد بگیره 😎' };
+  if(score < 2000) return { ico:'🌟', title:'افسانه‌ی ذهن‌آور!', text:'امتیازی که جمع کردی باورنکردنیه. ذهنت مثل یک ابررایانه کار می‌کنه!' };
+  return { ico:'🚀', title:'فراتر از مرزهای ذهن!', text:'تو به قله رسیدی. ذهنت حالا یک نیروگاه واقعیه. به خودت افتخار کن! 🏅' };
+}
+
+function updateHomeUI(){
+  const e = getEncouragement(userData.totalScore);
+  const ico = $('#sbIco'), title = $('#sbTitle'), text = $('#sbText'), score = $('#sbScore');
+  if(ico) ico.textContent = e.ico;
+  if(title) title.textContent = e.title;
+  if(text) text.textContent = e.text;
+  if(score) score.textContent = fa(userData.totalScore);
+}
+
+function updateGameMenuBadges(){
+  document.querySelectorAll('.mcard').forEach(card => {
+    const gk = card.dataset.game;
+    const pg = userData.perGame[gk];
+    let badge = card.querySelector('.mstar');
+    if(pg && pg.best > 0){
+      if(!badge){
+        badge = document.createElement('span');
+        badge.className = 'mstar';
+        card.appendChild(badge);
+      }
+      badge.textContent = '🏅 ' + fa(pg.best);
+    } else if(badge){ badge.remove(); }
+  });
+}
+
+/* ============================================================
+   افکت‌ها
+============================================================ */
+const CONFETTI_COLORS = ['#f37f00','#ffb84d','#ffd88a','#22c55e','#3b82f6','#ef4444','#a855f7','#facc15','#06b6d4'];
+const CONFETTI_SHAPES = ['■','●','▲','★','◆'];
+
+function burstConfetti(x, y){
+  const layer = document.getElementById('confetti-layer');
+  if(!layer) return;
+  const N = 34;
+  for(let i=0;i<N;i++){
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    const size = rnd(6,13);
+    const color = pick(CONFETTI_COLORS);
+    p.style.width = size+'px';
+    p.style.height = size+'px';
+    p.style.left = x+'px';
+    p.style.top = y+'px';
+    p.style.background = color;
+    if(Math.random() < .35) p.style.borderRadius = '50%';
+    if(Math.random() < .25){
+      p.textContent = pick(CONFETTI_SHAPES);
+      p.style.background = 'transparent';
+      p.style.color = color;
+      p.style.fontSize = (size+2)+'px';
+      p.style.lineHeight = size+'px';
+      p.style.textAlign = 'center';
+      p.style.width = (size+4)+'px';
+      p.style.height = (size+4)+'px';
+    }
+    const angle = Math.random()*Math.PI*2;
+    const power = rnd(70,240);
+    const tx = Math.cos(angle)*power;
+    const ty = Math.sin(angle)*power*.65 + rnd(160,320);
+    const rot = rnd(-1080,1080);
+    const dur = rnd(1300,2100);
+    p.style.setProperty('--tx', tx+'px');
+    p.style.setProperty('--ty', ty+'px');
+    p.style.setProperty('--rot', rot+'deg');
+    p.style.setProperty('--dur', dur+'ms');
+    layer.appendChild(p);
+    setTimeout(() => p.remove(), dur+100);
+  }
+  const flash = document.createElement('div');
+  flash.className = 'flash-ok';
+  document.body.appendChild(flash);
+  setTimeout(() => flash.remove(), 600);
+}
+
+/* ============================================================
+   داده‌ها
+============================================================ */
+const CITIES = [
+  {c:'اصفهان',        p:'اصفهان',            f:'به «نصف جهان» مشهور است؛ میدان نقش جهان و سی‌وسه‌پل از شاهکارهای آن‌اند.'},
+  {c:'شیراز',         p:'فارس',              f:'شهر حافظ و سعدی؛ تخت جمشید هم در همین استان قرار دارد.'},
+  {c:'مشهد',          p:'خراسان رضوی',       f:'بزرگ‌ترین شهر مذهبی ایران و میزبان حرم امام رضا (ع).'},
+  {c:'تبریز',         p:'آذربایجان شرقی',    f:'بازار تاریخی تبریز یکی از بزرگ‌ترین بازارهای سرپوشیده جهان است.'},
+  {c:'یزد',           p:'یزد',               f:'شهر بادگیرها و قنات‌ها؛ نخستین شهر خشت‌خام جهان.'},
+  {c:'کرمان',         p:'کرمان',             f:'دروازه کویر لوت و زادگاه مجموعه گنجعلی‌خان.'},
+  {c:'رشت',           p:'گیلان',             f:'مرکز گیلان؛ شهر باران و غذاهای خوشمزه شمالی.'},
+  {c:'اهواز',         p:'خوزستان',           f:'کنار رود کارون؛ یکی از گرم‌ترین شهرهای جهان.'},
+  {c:'بندرعباس',      p:'هرمزگان',           f:'مرکز هرمزگان و دروازه ورود به جزیره قشم.'},
+  {c:'همدان',         p:'همدان',             f:'آرامگاه بوعلی‌سینا و غار شگفت‌انگیز علیصدر اینجاست.'},
+  {c:'قم',            p:'قم',                f:'میزبان حرم حضرت معصومه (س) و حوزه علمیه.'},
+  {c:'کرمانشاه',      p:'کرمانشاه',          f:'طاق بستان و کتیبه بیستون در این استان‌اند.'},
+  {c:'زاهدان',        p:'سیستان و بلوچستان', f:'مرکز استانی پهناور در جنوب‌شرق ایران.'},
+  {c:'ارومیه',        p:'آذربایجان غربی',    f:'کنار دریاچه ارومیه، بزرگ‌ترین دریاچه داخلی ایران.'},
+  {c:'اردبیل',        p:'اردبیل',            f:'شهر سرعین و بقعه شیخ صفی‌الدین؛ قطب انرژی زمین‌گرمایی.'},
+  {c:'گرگان',         p:'گلستان',            f:'مرکز گلستان و دروازه جنگل ناهارخوران.'},
+  {c:'ساری',          p:'مازندران',          f:'مرکز مازندران؛ شهر جنگل و دریا.'},
+  {c:'کاشان',         p:'اصفهان',            f:'شهر گلاب و باغ فین؛ خانه‌های تاریخی بروجردی‌ها اینجاست.'},
+  {c:'نیشابور',       p:'خراسان رضوی',       f:'آرامگاه خیام و عطار در این شهر است.'},
+  {c:'بوشهر',         p:'بوشهر',             f:'بندری تاریخی با بافت قدیم و بادگیرهای خاص.'},
+  {c:'سنندج',         p:'کردستان',           f:'مرکز کردستان؛ شهری کوهستانی با موسیقی و فرهنگ غنی.'},
+  {c:'خرم‌آباد',      p:'لرستان',            f:'قلعه فلک‌الافلاک بر فراز تپه‌ای در قلب شهر است.'},
+  {c:'شهرکرد',        p:'چهارمحال و بختیاری',f:'یکی از بلندترین مراکز استان‌های ایران.'},
+  {c:'یاسوج',         p:'کهگیلویه و بویراحمد',f:'شهر آبشارها و بلوطستان‌های زاگرس.'},
+  {c:'زنجان',         p:'زنجان',             f:'شهر چاقو؛ گنبد سلطانیه در همین استان است.'},
+  {c:'قزوین',         p:'قزوین',             f:'پایتخت صفویان پیش از اصفهان؛ کاخ چهل‌ستون اینجاست.'},
+  {c:'اراک',          p:'مرکزی',             f:'مرکز استان مرکزی و شهری صنعتی در قلب ایران.'},
+  {c:'سمنان',         p:'سمنان',             f:'شهر مسجد جامع و کاروانسراهای مسیر جاده ابریشم.'},
+  {c:'بیرجند',        p:'خراسان جنوبی',      f:'مرکز خراسان جنوبی؛ شهری کویری با باغ‌های زرشک.'},
+  {c:'بجنورد',        p:'خراسان شمالی',      f:'مرکز خراسان شمالی؛ عمارت مفخم اینجاست.'},
+  {c:'ایلام',         p:'ایلام',             f:'مرکز استانی کوهستانی در غرب ایران با جنگل‌های بلوط.'},
+  {c:'آبادان',        p:'خوزستان',           f:'شهر پالایشگاه و اروند؛ در جنوب‌غربی خوزستان.'},
+  {c:'بم',            p:'کرمان',             f:'ارگ خشتی بم، بزرگ‌ترین سازه خشتی جهان، اینجاست.'},
+  {c:'شوش',           p:'خوزستان',           f:'از کهن‌ترین شهرهای جهان؛ چغازنبیل در نزدیکی آن است.'},
+  {c:'رامسر',         p:'مازندران',          f:'شهری میان جنگل و دریا با چشمه‌های آب گرم.'},
+  {c:'طبس',           p:'خراسان جنوبی',      f:'شهر گل‌گهر و نخلستان‌ها در حاشیه کویر.'},
+  {c:'چابهار',        p:'سیستان و بلوچستان', f:'تنها بندر اقیانوسی ایران با سواحل منحصربه‌فرد.'},
+  {c:'مراغه',         p:'آذربایجان شرقی',    f:'رصدخانه تاریخی خواجه نصیرالدین طوسی اینجاست.'},
+  {c:'ماسوله',        p:'گیلان',             f:'روستا-شهر پلکانی و تاریخی در دل جنگل‌های گیلان.'}
+];
+
+const NATURE = [
+  {n:'قله دماوند',       c:'تهران',      t:'کوه',     f:'بلندترین قله ایران و خاورمیانه با ارتفاع ۵۶۱۰ متر.'},
+  {n:'دریاچه ارومیه',    c:'ارومیه',     t:'دریاچه',  f:'بزرگ‌ترین دریاچه داخلی ایران با آب شور.'},
+  {n:'کویر لوت',         c:'کرمان',      t:'کویر',    f:'گرم‌ترین نقطه سطح زمین و میراث جهانی یونسکو.'},
+  {n:'جنگل ناهارخوران',  c:'گرگان',      t:'جنگل',    f:'جنگل سرسبز و زیبا در حاشیه جنوبی گرگان.'},
+  {n:'غار علیصدر',       c:'همدان',      t:'غار',     f:'بزرگ‌ترین غار آبی قابل قایقرانی جهان.'},
+  {n:'جزیره قشم',        c:'قشم',        t:'جزیره',   f:'بزرگ‌ترین جزیره خلیج فارس.'},
+  {n:'تالاب انزلی',      c:'بندر انزلی', t:'تالاب',   f:'تالاب بین‌المللی گیلان با پرندگان مهاجر.'},
+  {n:'جنگل ابر',         c:'شاهرود',     t:'جنگل',    f:'جنگلی در دریای ابر، پدیده‌ای کم‌نظیر.'},
+  {n:'دره ستارگان',      c:'قشم',        t:'دره',     f:'پدیده زمین‌شناسی شگفت‌انگیز در جزیره قشم.'},
+  {n:'پارک ملی گلستان',  c:'گلستان',     t:'پارک',    f:'نخستین پارک ملی ایران و میراث جهانی.'},
+  {n:'دریاچه گهر',       c:'دورود',      t:'دریاچه',  f:'نگین اشترانکوه در لرستان.'},
+  {n:'قله سبلان',        c:'اردبیل',     t:'کوه',     f:'دومین قله بلند ایران با چشمه‌های آب گرم.'},
+  {n:'آبشار پونه‌زار',   c:'الیگودرز',   t:'آبشار',   f:'بلندترین آبشار ایران در لرستان.'},
+  {n:'دشت کویر',         c:'سمنان',      t:'کویر',    f:'بیابان وسیع مرکز ایران.'},
+  {n:'آبشار مارگون',     c:'سپیدان',     t:'آبشار',   f:'آبشاری زیبا در دل صخره‌های زاگرس.'},
+  {n:'دریاچه هامون',     c:'زابل',       t:'دریاچه',  f:'دریاچه‌ای فصلی در سیستان و بلوچستان.'},
+  {n:'تنگه واشی',        c:'فیروزکوه',   t:'تنگه',    f:'تنگه‌ای تاریخی با کتیبه‌های فتحعلی‌شاه.'},
+  {n:'چشمه آب گرم سرعین',c:'سرعین',      t:'چشمه',    f:'چشمه‌های آب گرم معدنی با خواص درمانی.'},
+  {n:'دشت لار',          c:'تهران',      t:'دشت',     f:'دشتی زیبا در دامنه دماوند با دریاچه‌ای طبیعی.'},
+  {n:'جزیره هرمز',       c:'هرمزگان',    t:'جزیره',   f:'جزیره‌ای با خاک سرخ و سواحل رنگارنگ.'},
+  {n:'جنگل هیرکانی',     c:'مازندران',   t:'جنگل',    f:'کهن‌ترین جنگل‌های پهن‌برگ جهان.'},
+  {n:'غار کتله‌خور',     c:'زنجان',      t:'غار',     f:'غاری آهکی با تشکیلات شگفت‌انگیز.'}
+];
+
+const FOODS = [
+  {n:'سوهان',         c:'قم',        f:'سوهان قم سوغات معروف این شهر است که با زعفران و گلاب تهیه می‌شود.'},
+  {n:'گز',            c:'اصفهان',    f:'گز اصفهان از شیره گیاه گز و مغز پسته یا بادام ساخته می‌شود.'},
+  {n:'بریانی',        c:'اصفهان',    f:'بریانی اصفهان یکی از غذاهای اصیل این شهر است.'},
+  {n:'آش شله قلمکار', c:'اصفهان',    f:'آش شله قلمکار اصفهان غذایی سنتی با حبوبات و سبزیجات است.'},
+  {n:'فالوده',        c:'شیراز',     f:'فالوده شیرازی دسر خنک و محبوب تابستانی است.'},
+  {n:'کباب شیرازی',   c:'شیراز',     f:'کباب شیرازی با طعم و مزه مخصوص این شهر است.'},
+  {n:'باقلوا',        c:'یزد',       f:'باقلوا یزد سوغاتی شیرین و لطیف با پسته و گلاب است.'},
+  {n:'نان برنجی',     c:'کرمانشاه',  f:'نان برنجی کرمانشاه شیرینی سنتی و معروف این شهر است.'},
+  {n:'شله مشهدی',     c:'مشهد',      f:'شله مشهدی غذایی سنتی با گوشت و حبوبات است.'},
+  {n:'میرزا قاسمی',   c:'رشت',       f:'میرزا قاسمی غذایی گیلانی با بادمجان کبابی و تخم‌مرغ است.'},
+  {n:'باقلاقاتق',     c:'رشت',       f:'باقلاقاتق غذایی گیلانی با باقلا و سیر فراوان است.'},
+  {n:'قلیه ماهی',     c:'بوشهر',     f:'قلیه ماهی غذایی جنوبی مخصوص بوشهر است.'},
+  {n:'آش دوغ',        c:'اردبیل',    f:'آش دوغ اردبیل سرد و خوشمزه، مخصوص تابستان.'},
+  {n:'کباب بناب',     c:'بناب',      f:'کباب بناب شهرتی جهانی دارد.'},
+  {n:'پسته',          c:'رفسنجان',   f:'رفسنجان پایتخت پسته ایران است.'},
+  {n:'گلاب',          c:'کاشان',     f:'کاشان قطب تولید گلاب ایران است.'},
+  {n:'چای',           c:'لاهیجان',   f:'لاهیجان مرکز اصلی کشت چای در ایران است.'},
+  {n:'کلمپه',         c:'کرمان',     f:'کلمپه شیرینی سنتی کرمان است.'},
+  {n:'خرمای مضافتی',  c:'بم',        f:'خرمای مضافتی بم از مرغوب‌ترین خرماهای جهان است.'},
+  {n:'زیتون پرورده',  c:'رشت',       f:'زیتون پرورده گیلان از سوغات معروف شمال است.'}
+];
+
+const FAMOUS = [
+  {n:'حافظ',              c:'شیراز',   t:'شاعر',         f:'لسان‌الغیب، حافظ شیرازی از بزرگ‌ترین غزل‌سرایان ایران است.'},
+  {n:'سعدی',              c:'شیراز',   t:'شاعر',         f:'سعدی شیرازی سراینده گلستان و بوستان است.'},
+  {n:'بوعلی سینا',        c:'همدان',   t:'دانشمند',      f:'ابوعلی سینا فیلسوف و پزشک بزرگ، آرامگاهش در همدان است.'},
+  {n:'خیام',              c:'نیشابور', t:'شاعر و ریاضیدان', f:'عمر خیام ریاضیدان، ستاره‌شناس و شاعر رباعیات، اهل نیشابور است.'},
+  {n:'عطار',              c:'نیشابور', t:'شاعر',         f:'عطار نیشابوری سراینده منطق‌الطیر است.'},
+  {n:'فردوسی',            c:'مشهد',    t:'شاعر',         f:'حکیم ابوالقاسم فردوسی سراینده شاهنامه، آرامگاهش در توس نزدیک مشهد است.'},
+  {n:'خواجه نصیرالدین طوسی', c:'مراغه',  t:'دانشمند',      f:'خواجه نصیر رصدخانه بزرگ مراغه را بنا نهاد.'},
+  {n:'ملاصدرا',           c:'شیراز',   t:'فیلسوف',       f:'ملاصدرا فیلسوف بزرگ و بنیان‌گذار حکمت متعالیه، اهل شیراز است.'},
+  {n:'کوروش بزرگ',        c:'پاسارگاد',t:'پادشاه',       f:'کوروش هخامنشی بنیان‌گذار شاهنشاهی ایران، آرامگاهش در پاسارگاد است.'},
+  {n:'امام خمینی',        c:'خمین',    t:'رهبر',         f:'بنیان‌گذار جمهوری اسلامی ایران، اهل شهر خمین است.'},
+  {n:'پروین اعتصامی',     c:'تبریز',   t:'شاعر',         f:'پروین اعتصامی شاعر مشهور، متولد تبریز است.'},
+  {n:'نیما یوشیج',        c:'نور',     t:'شاعر',         f:'پدر شعر نو فارسی، متولد روستای یوش در شهرستان نور مازندران.'},
+  {n:'صادق هدایت',        c:'تهران',   t:'نویسنده',      f:'نویسنده بوف کور، متولد تهران است.'},
+  {n:'جلال آل‌احمد',      c:'تهران',   t:'نویسنده',      f:'جلال آل‌احمد نویسنده و روشنفکر، اهل تهران بود.'}
+];
+
+const CRAFTS = [
+  {n:'فرش دستباف',    c:'کاشان',    f:'فرش کاشان از معروف‌ترین و باکیفیت‌ترین فرش‌های ایرانی است.'},
+  {n:'فیروزه',        c:'نیشابور',  f:'فیروزه نیشابور از باکیفیت‌ترین فیروزه‌های جهان است.'},
+  {n:'قلم‌زنی',       c:'اصفهان',   f:'قلم‌زنی روی مس هنر اصیل اصفهان است.'},
+  {n:'میناکاری',      c:'اصفهان',   f:'میناکاری اصفهان هنری با لعاب رنگی روی فلز است.'},
+  {n:'خاتم‌کاری',     c:'شیراز',    f:'خاتم‌کاری شیراز هنری ظریف با چوب، استخوان و فلز است.'},
+  {n:'ترمه',          c:'یزد',      f:'ترمه‌بافی یزد پارچه‌ای نفیس با نقش‌های ظریف است.'},
+  {n:'گلیم',          c:'سنندج',    f:'گلیم کردستان با نقش‌های هندسی خاص بافته می‌شود.'},
+  {n:'سفال',          c:'همدان',    f:'سفال لالجین همدان شهرت جهانی دارد.'},
+  {n:'شیشه‌گری',      c:'تهران',    f:'شیشه‌گری و آبگینه از هنرهای قدیم ایران است.'},
+  {n:'زیلو',          c:'یزد',      f:'زیلوبافی یزد فرش سنتی و خنک تابستانی است.'},
+  {n:'چادرشب',        c:'رشت',      f:'چادرشب‌بافی گیلان با رنگ‌های شاد و نقش‌های سنتی.'},
+  {n:'نقره‌کاری',     c:'اصفهان',   f:'نقره‌کاری اصفهان هنری ارزشمند و پرطرفدار است.'},
+  {n:'عروسک‌سازی',    c:'تبریز',    f:'عروسک‌های تبریز و آذربایجان شهرت دارند.'},
+  {n:'جعبه‌های خاتم', c:'شیراز',    f:'جعبه‌های خاتم شیراز سوغات معروفی هستند.'},
+  {n:'منبت',          c:'ملایر',    f:'منبت ملایر هنر کنده‌کاری روی چوب است.'}
+];
+
+const PROVERBS = [
+  {q:'با یک گل ...',            a:'بهار نمی‌شود',           f:'کنایه از اینکه با یک نمونه خوب، همه چیز خوب نمی‌شود.'},
+  {q:'آب در هاون ...',          a:'کوبیدن',                 f:'کنایه از انجام دادن کار بیهوده و بی‌نتیجه.'},
+  {q:'دیگ به دیگ می‌گوید ...',  a:'رویت سیاه است',          f:'عیب خود را ندیدن و عیب دیگران را گفتن.'},
+  {q:'هر که بامش بیش، ...',     a:'برفش بیشتر',             f:'هر که مقامش بالاتر، مسئولیتش بیشتر.'},
+  {q:'شتر دیدی، ...',           a:'ندیدی',                  f:'چیزی را که دیدی، انکار کن و خود را به ندیدن بزن.'},
+  {q:'از تو حرکت، ...',         a:'از خدا برکت',            f:'اول تلاش کن، سپس توکل کن.'},
+  {q:'یک دست صدا ...',          a:'ندارد',                  f:'برای رسیدن به هدف، همکاری لازم است.'},
+  {q:'از این ستون به آن ستون ...', a:'فرار است',            f:'کنایه از فرار و طفره رفتن.'},
+  {q:'کار را که کرد، ...',      a:'آن که تمام کرد',         f:'کسی که کار را به پایان می‌رساند ارزشمند است.'},
+  {q:'آب که از سر گذشت، ...',   a:'چه یک وجب چه صد وجب',    f:'کار از کار گذشته است و دیگر فرقی نمی‌کند.'},
+  {q:'مو را از ماست ...',       a:'جدا کردن',               f:'دقت بسیار زیاد در جزئیات.'},
+  {q:'نانی به نرخ ...',         a:'روز',                    f:'هر چیزی به قیمت واقعی خود.'},
+  {q:'آدم بی‌سواد مثل زمین ...', a:'شوره‌زار است',          f:'بی‌سوادی مانع رشد و شکوفایی است.'},
+  {q:'با یک دست نمی‌توان ...',   a:'دو هندوانه برداشت',     f:'طمع بیش از حد و انجام همزمان دو کار.'},
+  {q:'سنگ بزرگ ...',            a:'علامت نزدن است',         f:'کنایه از اینکه تهدید بزرگ نشانه عمل نکردن است.'}
+];
+
+/* ============================================================
+   بازی ۸: سؤالات حرم‌شناسی — نسخه اصلاح‌شده
+   پاسخ‌ها هم‌جنس و مرتبط هستند تا گزینه‌های نادرست هم منطقی باشند
+============================================================ */
+const HARAM = [
+  {
+    n:'حرم امام رضا (ع) در کدام شهر قرار دارد؟',
+    c:'مشهد',
+    t:'جغرافیا',
+    f:'حرم امام رضا (ع) در قلب شهر مشهد، مرکز استان خراسان رضوی، قرار دارد.'
+  },
+  {
+    n:'مدفن امام رضا (ع) در کدام شهر است؟',
+    c:'مشهد',
+    t:'مبانی',
+    f:'علی بن موسی الرضا (ع)، امام هشتم شیعیان، در مشهد به خاک سپرده شده است.'
+  },
+  {
+    n:'حرم امام رضا (ع) در کدام استان ایران است؟',
+    c:'خراسان رضوی',
+    t:'جغرافیا',
+    f:'مشهد مرکز استان خراسان رضوی و بزرگ‌ترین شهر مذهبی ایران است.'
+  },
+  {
+    n:'گنبد حرم امام رضا (ع) از چه جنسی است؟',
+    c:'طلا',
+    t:'گنبد',
+    f:'گنبد طلای حرم امام رضا (ع) بلندترین گنبد طلای جهان اسلام است.'
+  },
+  {
+    n:'گنبد حرم امام رضا (ع) در کدام دوره طلاکاری شد؟',
+    c:'دوره صفویه',
+    t:'تاریخ',
+    f:'گنبد حرم در دوره صفویه طلاکاری شد و بعدها در دوره‌های مختلف مرمت شد.'
+  },
+  {
+    n:'صحن انقلاب حرم امام رضا (ع) در کدام دوره ساخته شد؟',
+    c:'دوره صفویه',
+    t:'تاریخ',
+    f:'صحن انقلاب یا صحن عتیق، قدیمی‌ترین صحن حرم است که در دوره صفویه ساخته شد.'
+  },
+  {
+    n:'صحن آزادی حرم امام رضا (ع) در کدام دوره ساخته شد؟',
+    c:'دوره قاجار',
+    t:'تاریخ',
+    f:'صحن آزادی (صحن نو) به دستور فتحعلی‌شاه قاجار ساخته شد.'
+  },
+  {
+    n:'بزرگ‌ترین صحن حرم امام رضا (ع) کدام است؟',
+    c:'صحن جامع رضوی',
+    t:'صحن',
+    f:'صحن جامع رضوی با مساحت حدود ۷۰ هزار متر مربع، بزرگ‌ترین صحن حرم است.'
+  },
+  {
+    n:'کدام صحن حرم امام رضا (ع) مخصوص بانوان است؟',
+    c:'صحن کوثر',
+    t:'صحن',
+    f:'صحن کوثر در ضلع شرقی حرم قرار دارد و مخصوص خواهران است.'
+  },
+  {
+    n:'کدام صحن حرم امام رضا (ع) در ضلع غربی قرار دارد؟',
+    c:'صحن غدیر',
+    t:'صحن',
+    f:'صحن غدیر در ضلع غربی حرم و از صحن‌های جدیدتر است.'
+  },
+  {
+    n:'قدیمی‌ترین صحن حرم امام رضا (ع) چه نام دارد؟',
+    c:'صحن انقلاب (عتیق)',
+    t:'صحن',
+    f:'صحن انقلاب یا عتیق، هسته اولیه حرم و قدیمی‌ترین صحن آن است.'
+  },
+  {
+    n:'حرم امام رضا (ع) چند صحن اصلی دارد؟',
+    c:'بیش از ۱۰ صحن',
+    t:'صحن',
+    f:'حرم امام رضا (ع) دارای صحن‌های متعدد از جمله انقلاب، آزادی، جامع رضوی، کوثر، غدیر و هدایت است.'
+  },
+  {
+    n:'ساعت معروف حرم امام رضا (ع) هدیه چه کسی است؟',
+    c:'ناصرالدین‌شاه قاجار',
+    t:'تاریخ',
+    f:'ساعت بزرگ حرم از هدایای ناصرالدین‌شاه قاجار است.'
+  },
+  {
+    n:'بست شیخ طوسی در حرم امام رضا (ع) به نام چه کسی است؟',
+    c:'شیخ طوسی، عالم بزرگ شیعه',
+    t:'بست',
+    f:'بست شیخ طوسی به نام شیخ طوسی، از علمای بزرگ شیعه و صاحب کتاب تهذیب‌الاحکام، نام‌گذاری شده است.'
+  },
+  {
+    n:'رواق دارالرحمه در حرم امام رضا (ع) محل دفن چه کسی است؟',
+    c:'شیخ طبرسی',
+    t:'رواق',
+    f:'رواق دارالرحمه در ضلع شرقی حرم و محل دفن شیخ طبرسی، صاحب تفسیر مجمع‌البیان، است.'
+  },
+  {
+    n:'رواق دارالولایه در کدام ضلع حرم امام رضا (ع) قرار دارد؟',
+    c:'ضلع شمالی روضه منوره',
+    t:'رواق',
+    f:'دارالولایه از قدیمی‌ترین رواق‌های حرم و در ضلع شمالی روضه منوره قرار دارد.'
+  },
+  {
+    n:'رواق دارالشفا در حرم امام رضا (ع) چه کاربردی دارد؟',
+    c:'محل توسل بیماران برای شفا',
+    t:'رواق',
+    f:'دارالشفا از قدیم محل توسل بیماران به امام رضا (ع) بوده است.'
+  },
+  {
+    n:'رواق دارالذکر در حرم امام رضا (ع) مخصوص چیست؟',
+    c:'زیارت و ذکر',
+    t:'رواق',
+    f:'دارالذکر رواقی زیبا با فضایی آرام برای عبادت و ذکر است.'
+  },
+  {
+    n:'ایوان طلای معروف حرم امام رضا (ع) در کدام صحن قرار دارد؟',
+    c:'صحن آزادی (صحن نو)',
+    t:'ایوان',
+    f:'ایوان طلای صحن آزادی از شاهکارهای معماری اسلامی و رو به قبله است.'
+  },
+  {
+    n:'موزه حرم امام رضا (ع) در کدام صحن قرار دارد؟',
+    c:'صحن کوثر',
+    t:'موزه',
+    f:'موزه حرم مطهر رضوی در صحن کوثر قرار دارد و اشیای نفیس تاریخی و هدایای زائران را نگهداری می‌کند.'
+  },
+  {
+    n:'کتابخانه آستان قدس رضوی چه ویژگی خاصی دارد؟',
+    c:'بیش از ۱۰۰ هزار نسخه خطی',
+    t:'فرهنگی',
+    f:'کتابخانه آستان قدس رضوی یکی از غنی‌ترین کتابخانه‌های نسخ خطی جهان اسلام است.'
+  },
+  {
+    n:'دارالقرآن کریم در حرم امام رضا (ع) چه نقشی دارد؟',
+    c:'آموزش و حفظ قرآن',
+    t:'فرهنگی',
+    f:'دارالقرآن کریم از مراکز مهم قرآنی جهان اسلام در جوار حرم رضوی است.'
+  },
+  {
+    n:'مهمانسرای حضرت رضا (ع) چه خدمتی ارائه می‌دهد؟',
+    c:'پذیرایی از زائران',
+    t:'خدماتی',
+    f:'مهمانسرای حضرت رضا (ع) روزانه از هزاران زائر با غذا و اقامت پذیرایی می‌کند.'
+  },
+  {
+    n:'گلدسته‌های حرم امام رضا (ع) از چه جنسی هستند؟',
+    c:'طلا',
+    t:'گلدسته',
+    f:'گلدسته‌های طلای حرم در دو طرف گنبد قرار دارند و از شاهکارهای معماری اسلامی هستند.'
+  },
+  {
+    n:'مساحت تقریبی صحن جامع رضوی چقدر است؟',
+    c:'حدود ۷۰ هزار متر مربع',
+    t:'صحن',
+    f:'صحن جامع رضوی بزرگ‌ترین صحن حرم امام رضا (ع) با مساحت حدود ۷۰ هزار متر مربع است.'
+  },
+  {
+    n:'حرم امام رضا (ع) چند گلدسته طلا دارد؟',
+    c:'دو گلدسته',
+    t:'گلدسته',
+    f:'حرم امام رضا (ع) دو گلدسته طلا در دو طرف گنبد دارد.'
+  }
+];
+
+/* ============================================================
+   سطح‌ها
+============================================================ */
+const LEVEL_NAMES = ['ساده', 'متوسط', 'سخت'];
+const LEVEL_ICONS = ['🌱', '⚡', '🔥'];
+const LEVEL_COUNT = [7, 9, 11];
+const LEVEL_OPTS  = [3, 4, 4];
+const PASS_THRESHOLD = 5;
+
+let currentGame = null;
+let currentLevel = 0;
+
+/* ============================================================
+   سازنده گزینه‌ها (برای حرم، از مجموعه پاسخ‌های هم‌جنس)
+============================================================ */
+function buildOptions(correct, pool, count){
+  const distractors = shuffle(pool.filter(v => v !== correct)).slice(0, count - 1);
+  return shuffle([correct, ...distractors]).map(v => ({ label:v, correct: v === correct }));
+}
+
+/* برای حرم‌شناسی: گزینه‌های نادرست را از پاسخ‌های هم‌دسته انتخاب می‌کنیم */
+function buildHaramOptions(correct, category, count){
+  // همه پاسخ‌های همان دسته
+  const sameCat = HARAM.filter(q => q.t === category).map(q => q.c);
+  // اگر تعداد کافی در همان دسته نبود، از دسته‌های دیگر هم اضافه کن
+  let pool = uniq([...sameCat, ...HARAM.map(q => q.c)]);
+  const distractors = shuffle(pool.filter(v => v !== correct)).slice(0, count - 1);
+  return shuffle([correct, ...distractors]).map(v => ({ label:v, correct: v === correct }));
+}
+
+/* ============================================================
+   سازنده سؤالات
+============================================================ */
+function makeCityQuestions(count, level, optCount){
+  const subjects  = shuffle(CITIES.filter(x => x.c !== x.p));
+  const provinces = uniq(CITIES.map(x => x.p));
+  const cityNames = uniq(CITIES.map(x => x.c));
+  const out = [];
+  for(let k=0;k<count;k++){
+    const s = subjects[k % subjects.length];
+    if(Math.random() < 0.5){
+      out.push({
+        tag:'استان‌شناسی',
+        main:`شهر <b>${s.c}</b> در کدام استان است؟`,
+        options: buildOptions(s.p, provinces, optCount),
+        fact: s.f
+      });
+    } else {
+      out.push({
+        tag:'شهرشناسی',
+        main:`کدام شهر در استان <b>${s.p}</b> قرار دارد؟`,
+        options: buildOptions(s.c, cityNames, optCount),
+        fact: s.f
+      });
+    }
+  }
+  return out;
+}
+
+function makeNatureQuestions(count, level, optCount){
+  const picked = shuffle(NATURE).slice(0, count);
+  const cities = uniq(NATURE.map(x => x.c));
+  return picked.map(p => ({
+    tag: p.t,
+    main:`«${p.n}» در کدام منطقه قرار دارد؟`,
+    options: buildOptions(p.c, cities, optCount),
+    fact: p.f
+  }));
+}
+
+function makeMathQuestions(count, level, optCount){
+  const out = [];
+  const max1 = level === 0 ? 20 : level === 1 ? 50 : 99;
+  const max2 = level === 0 ? 15 : level === 1 ? 40 : 99;
+  const maxM = level === 0 ? 5  : level === 1 ? 9  : 15;
+  for(let k=0;k<count;k++){
+    const op = level === 0 ? pick(['+','-']) : pick(['+','-','×','÷']);
+    let a,b,ans;
+    if(op === '+'){ a = rnd(2, max1); b = rnd(2, max2); ans = a + b; }
+    else if(op === '-'){ a = rnd(5, max1); b = rnd(2, a - 1); ans = a - b; }
+    else if(op === '×'){ a = rnd(2, maxM); b = rnd(2, maxM); ans = a * b; }
+    else { b = rnd(2, maxM); ans = rnd(2, maxM); a = b * ans; }
+
+    const set = new Set([ans]);
+    let guard = 0;
+    while(set.size < 4 && guard++ < 200){
+      const d = ans + pick([-10,-5,-3,-2,-1,1,2,3,5,10]);
+      if(d >= 0 && d !== ans) set.add(d);
+    }
+    let filler = 0;
+    while(set.size < 4){ set.add(ans + (++filler) + 10); }
+
+    out.push({
+      tag:'حساب',
+      main:`<span class="expr" dir="ltr">${fa(a)} ${op} ${fa(b)} = ?</span>`,
+      options: shuffle([...set]).map(v => ({ label: fa(v), correct: v === ans })),
+      grid: true
+    });
+  }
+  return out;
+}
+
+function makeFoodQuestions(count, level, optCount){
+  const picked = shuffle(FOODS).slice(0, count);
+  const cities = uniq(FOODS.map(x => x.c));
+  return picked.map(p => ({
+    tag:'غذای محلی',
+    main:`«${p.n}» سوغات یا غذای معروف کدام شهر است؟`,
+    options: buildOptions(p.c, cities, optCount),
+    fact: p.f
+  }));
+}
+
+function makeFamousQuestions(count, level, optCount){
+  const picked = shuffle(FAMOUS).slice(0, count);
+  const cities = uniq(FAMOUS.map(x => x.c));
+  return picked.map(p => ({
+    tag: p.t,
+    main:`${p.n} اهل کدام شهر است؟`,
+    options: buildOptions(p.c, cities, optCount),
+    fact: p.f
+  }));
+}
+
+function makeCraftQuestions(count, level, optCount){
+  const picked = shuffle(CRAFTS).slice(0, count);
+  const cities = uniq(CRAFTS.map(x => x.c));
+  return picked.map(p => ({
+    tag:'صنایع دستی',
+    main:`«${p.n}» به کدام شهر معروف است؟`,
+    options: buildOptions(p.c, cities, optCount),
+    fact: p.f
+  }));
+}
+
+function makeProverbQuestions(count, level, optCount){
+  const picked = shuffle(PROVERBS).slice(0, count);
+  const endings = uniq(PROVERBS.map(x => x.a));
+  return picked.map(p => ({
+    tag:'ضرب‌المثل',
+    main: p.q,
+    sub: 'ادامه ضرب‌المثل کدام است؟',
+    options: buildOptions(p.a, endings, optCount),
+    fact: p.f
+  }));
+}
+
+function makeHaramQuestions(count, level, optCount){
+  const picked = shuffle(HARAM).slice(0, count);
+  return picked.map(p => ({
+    tag: p.t,
+    main: p.n,
+    options: buildHaramOptions(p.c, p.t, optCount),
+    fact: p.f
+  }));
+}
+
+/* ============================================================
+   ثبت بازی‌ها
+============================================================ */
+const GAMES = {
+  city:    { title:'شهرهای ایران',           icon:'🏙️', num:'۱', make: makeCityQuestions },
+  nature:  { title:'جاذبه‌های طبیعی ایران',  icon:'🏔️', num:'۲', make: makeNatureQuestions },
+  food:    { title:'غذاهای محلی ایران',      icon:'🍲', num:'۳', make: makeFoodQuestions },
+  famous:  { title:'مشاهیر ایران',           icon:'📜', num:'۴', make: makeFamousQuestions },
+  craft:   { title:'صنایع دستی ایران',       icon:'🧵', num:'۵', make: makeCraftQuestions },
+  proverb: { title:'ضرب‌المثل‌های ایران',   icon:'💬', num:'۶', make: makeProverbQuestions },
+  math:    { title:'حساب سریع',              icon:'➗', num:'۷', make: makeMathQuestions },
+  haram:   { title:'حرم‌شناسی',              icon:'🕌', num:'۸', make: makeHaramQuestions }
+};
+
+function renderGameMenu(){
+  const menu = $('#gameMenu');
+  menu.innerHTML = '';
+  Object.entries(GAMES).forEach(([key, cfg]) => {
+    const btn = document.createElement('button');
+    btn.className = 'mcard' + (key === 'haram' ? ' holy' : '');
+    btn.dataset.game = key;
+    btn.innerHTML = `
+      <span class="mnum">${cfg.num}</span>
+      <span class="mico">${cfg.icon}</span>
+      <span class="mbody"><b>${cfg.title}</b><small>${getGameSubtitle(key)}</small></span>
+      <span class="marrow">‹</span>`;
+    menu.appendChild(btn);
+  });
+}
+
+function getGameSubtitle(key){
+  const subs = {
+    city:'شهرها و استان‌ها را به هم وصل کن',
+    nature:'کوه، جنگل، دریاچه، کویر و جزیره',
+    food:'سوغات و غذاهای هر شهر',
+    famous:'شاعران، دانشمندان و نویسندگان',
+    craft:'هنرهای سنتی و شهرهایشان',
+    proverb:'ادامه ضرب‌المثل را پیدا کن',
+    math:'جمع، تفریق، ضرب و تقسیم',
+    haram:'حرم امام رضا (ع) — تاریخ، صحن‌ها و مفاهیم'
+  };
+  return subs[key] || '';
+}
+
+function updateCornerLevelBtn(){
+  const icon = $('#lvlBtnIcon');
+  const dot  = $('#lvlBtnDot');
+  if(icon) icon.textContent = LEVEL_ICONS[currentLevel] || '🌱';
+  if(dot)  dot.textContent  = fa(currentLevel + 1);
+}
+
+/* ============================================================
+   موتور مسابقه
+============================================================ */
+function startQuiz(host, questions, opts = {}){
+  const total = questions.length;
+  let i = 0, score = 0, correct = 0, streak = 0, bestStreak = 0, locked = false;
+
+  const DELAY_OK  = 1400;
+  const DELAY_BAD = 2200;
+
+  function finish(){
+    addScore(opts.gameKey, correct, total, score, bestStreak);
+    updateHomeUI();
+    updateGameMenuBadges();
+
+    const pct = Math.round(correct / total * 100);
+    const e = getEncouragement(userData.totalScore);
+    const lvlName = LEVEL_NAMES[opts.level] || 'ساده';
+    const lvlIcon = LEVEL_ICONS[opts.level] || '🌱';
+
+    let suggestHTML = '';
+    const isLastLevel = opts.level >= 2;
+
+    if(correct > PASS_THRESHOLD && !isLastLevel){
+      suggestHTML = `
+        <div class="suggest up">
+          🎉 <b>آفرین!</b> با ${fa(correct)} پاسخ درست، سطح بعد (<b>${LEVEL_ICONS[opts.level+1]} ${LEVEL_NAMES[opts.level+1]}</b>) باز شد.
+        </div>`;
+    } else if(correct <= PASS_THRESHOLD){
+      suggestHTML = `
+        <div class="suggest">
+          💡 پیشنهاد می‌کنم سطح <b>${lvlIcon} ${lvlName}</b> را دوباره بازی کنی تا تسلط بیشتری پیدا کنی.
+          (برای رفتن به سطح بعد باید <b>بیشتر از ${fa(PASS_THRESHOLD)}</b> پاسخ درست بدهی)
+        </div>`;
+    } else {
+      suggestHTML = `
+        <div class="suggest up">
+          🏅 تو در بالاترین سطح (<b>${LEVEL_ICONS[2]} ${LEVEL_NAMES[2]}</b>) هستی!
+        </div>`;
+    }
+
+    host.innerHTML = `
+      <div class="qcard result">
+        <div class="rbig">${fa(correct)}/${fa(total)}</div>
+        <div class="rlabel">${getResultLabel(pct)}</div>
+        <div class="rbar"><i style="width:${pct}%"></i></div>
+        <div class="rmeta">
+          امتیاز این دور: <b>${fa(score)}</b> •
+          امتیاز کل: <b>${fa(userData.totalScore)}</b> •
+          سطح ${lvlIcon} ${lvlName}
+        </div>
+        ${suggestHTML}
+        <div class="encourage">
+          <span class="emoji">${e.ico}</span>
+          <b>${e.title}</b><br>
+          ${e.text}
+        </div>
+        <div class="ractions">
+          <button class="btn primary" id="again">بازی دوباره</button>
+          <button class="btn ghost" id="changeLv">تغییر سطح</button>
+          <button class="btn ghost" data-go="home">صفحه اصلی</button>
+        </div>
+      </div>`;
+
+    host.querySelector('#again').addEventListener('click', () => {
+      if(opts.restart) opts.restart();
+      else startQuiz(host, questions, opts);
+    });
+    host.querySelector('#changeLv').addEventListener('click', () => {
+      if(opts.onChangeLevel) opts.onChangeLevel();
+    });
+  }
+
+  function getResultLabel(pct){
+    if(pct === 100)     return 'بی‌نقص! تو یک ایران‌شناس واقعی هستی 🏆';
+    if(pct >= 80)       return 'عالی بود! 👏';
+    if(pct >= 50)       return 'خوب بود، با کمی تمرین بهتر هم می‌شوی 💪';
+    return 'اشکالی نداره، یک بار دیگر امتحان کن 🙂';
+  }
+
+  function render(){
+    if(i >= total) return finish();
+    locked = false;
+    const q = questions[i];
+    const lvlName = LEVEL_NAMES[opts.level] || 'ساده';
+    const lvlIcon = LEVEL_ICONS[opts.level] || '🌱';
+
+    host.innerHTML = `
+      <div class="qhead">
+        <span class="pill">سؤال ${fa(i+1)} از ${fa(total)}</span>
+        <span class="pill lvl">${lvlIcon} ${lvlName}</span>
+        <span class="pill score">${fa(score)}</span>
+      </div>
+      <div class="qcard" id="qcard">
+        ${q.tag ? `<div class="qtag">${q.tag}</div>` : ''}
+        <div class="qmain">${q.main}</div>
+        ${q.sub ? `<div class="qsub">${q.sub}</div>` : ''}
+      </div>
+      <div class="opts ${q.grid ? 'grid2' : ''}"></div>
+      <div class="fb"></div>`;
+
+    const optsEl = host.querySelector('.opts');
+    const fbEl   = host.querySelector('.fb');
+    const qcard  = host.querySelector('#qcard');
+    const correctIdx = q.options.findIndex(o => o.correct);
+
+    q.options.forEach((o, idx) => {
+      const b = document.createElement('button');
+      b.className = 'opt';
+      b.innerHTML = `<span class="oidx">${fa(idx+1)}</span><span class="otext">${o.label}</span>`;
+      b.addEventListener('click', (e) => answer(idx, e));
+      optsEl.appendChild(b);
+    });
+
+    function answer(idx, evt){
+      if(locked) return;
+      locked = true;
+      const nodes = [...optsEl.children];
+
+      nodes.forEach((el, k) => {
+        el.disabled = true;
+        if(k === correctIdx) el.classList.add('ok');
+        else if(k === idx)   el.classList.add('bad');
+        else                 el.classList.add('dim');
+      });
+
+      const right = idx === correctIdx;
+      let gain = 0;
+
+      if(right){
+        streak++;
+        bestStreak = Math.max(bestStreak, streak);
+        gain = 10 + Math.min(streak - 1, 5) * 2;
+        score += gain;
+        correct++;
+        qcard.classList.add('win');
+
+        let cx = window.innerWidth / 2;
+        let cy = window.innerHeight / 2;
+        if(evt && evt.clientX){ cx = evt.clientX; cy = evt.clientY; }
+        else if(nodes[idx]){
+          const r = nodes[idx].getBoundingClientRect();
+          cx = r.left + r.width / 2;
+          cy = r.top + r.height / 2;
+        }
+        burstConfetti(cx, cy);
+      } else {
+        streak = 0;
+        qcard.classList.add('lose');
+      }
+
+      const delay = right ? DELAY_OK : DELAY_BAD;
+
+      fbEl.innerHTML = `
+        <div class="fbrow ${right ? 'good' : 'bad'}">
+          <span class="fbtxt">
+            ${right
+              ? `درست بود! <b>+${fa(gain)}</b>${streak > 1 ? ` <span style="color:var(--muted)">(زنجیره ${fa(streak)})</span>` : ''}`
+              : `نادرست — پاسخ درست: <b>${q.options[correctIdx].label}</b>`}
+          </span>
+        </div>
+        ${q.fact ? `<div class="fact">${q.fact}</div>` : ''}
+        <div class="autobar"><i style="--adur:${delay}ms"></i></div>`;
+
+      setTimeout(() => { i++; render(); }, delay);
+    }
+  }
+
+  render();
+}
+
+/* ============================================================
+   انتخاب سطح
+============================================================ */
+function showLevelPicker(gameKey){
+  currentGame = gameKey;
+  const cfg = GAMES[gameKey];
+  const unlocked = userData.unlockedLevels[gameKey] || 0;
+
+  $('#level-title').textContent = 'انتخاب سطح';
+
+  const host = $('#level-stage');
+  host.innerHTML = `
+    <div class="qcard">
+      <div class="qtag">انتخاب دستی سطح</div>
+      <div class="qmain">${cfg.icon} ${cfg.title}</div>
+      <div class="qsub">با دکمه گوشه بالای صفحه هم می‌توانی در میانه بازی سطح را عوض کنی</div>
+    </div>
+    <div class="opts">
+      <button class="opt" data-lv="0">
+        <span class="oidx">🌱</span>
+        <span class="otext">ساده <small class="auto-badge">۷ سؤال • ۳ گزینه</small></span>
+      </button>
+      <button class="opt" data-lv="1">
+        <span class="oidx">⚡</span>
+        <span class="otext">متوسط <small class="auto-badge">۹ سؤال • ۴ گزینه${unlocked >= 1 ? ' • باز شده ✅' : ''}</small></span>
+      </button>
+      <button class="opt" data-lv="2">
+        <span class="oidx">🔥</span>
+        <span class="otext">سخت <small class="auto-badge">۱۱ سؤال • ۴ گزینه${unlocked >= 2 ? ' • باز شده ✅' : ''}</small></span>
+      </button>
+    </div>
+    ${unlocked < 2 ? `
+      <div class="suggest" style="margin-top:14px;border-color:rgba(243,127,0,.4);background:rgba(243,127,0,.08);color:#ffcf8a">
+        🔓 برای باز کردن سطح‌های بالاتر، در هر دور بیشتر از <b>${fa(PASS_THRESHOLD)}</b> پاسخ درست بده.
+      </div>` : ''}
+    ${userData.perGame[gameKey] ? `
+      <div class="suggest up" style="margin-top:14px">
+        🏅 رکورد تو در این بازی: <b>${fa(userData.perGame[gameKey].best)}</b> پاسخ درست
+      </div>` : ''}`;
+
+  host.querySelectorAll('[data-lv]').forEach(btn => {
+    btn.addEventListener('click', () => startGame(gameKey, parseInt(btn.dataset.lv, 10)));
+  });
+
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $('#s-level').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+/* ============================================================
+   شروع بازی
+============================================================ */
+function startGame(gameKey, level){
+  currentGame  = gameKey;
+  currentLevel = level;
+
+  const cfg = GAMES[gameKey];
+  const count    = LEVEL_COUNT[level];
+  const optCount = gameKey === 'math' ? 4 : LEVEL_OPTS[level];
+
+  $('#game-title').textContent = `${cfg.num}. ${cfg.icon} ${cfg.title}`;
+  updateCornerLevelBtn();
+
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $('#s-game').classList.add('active');
+  window.scrollTo(0, 0);
+
+  const host = $('#game-stage');
+  const run = () => {
+    const questions = cfg.make(count, level, optCount);
+    startQuiz(host, questions, {
+      level, gameKey, restart: run,
+      onChangeLevel: () => showLevelPicker(gameKey)
+    });
+  };
+  run();
+}
+
+$('#lvlBtn').addEventListener('click', () => {
+  if(currentGame) showLevelPicker(currentGame);
+});
+
+/* ============================================================
+   مسیریابی
+============================================================ */
+function go(name){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById('s-' + name);
+  if(el) el.classList.add('active');
+  window.scrollTo(0, 0);
+  if(name === 'home'){
+    updateHomeUI();
+    updateGameMenuBadges();
+  }
+}
+
+document.addEventListener('click', e => {
+  const back = e.target.closest('[data-go]');
+  if(back){ go(back.dataset.go); return; }
+
+  const gm = e.target.closest('[data-game]');
+  if(gm){ showLevelPicker(gm.dataset.game); }
+});
+
+/* ============================================================
+   راه‌اندازی اولیه
+============================================================ */
+loadUser();
+renderGameMenu();
+updateHomeUI();
+updateGameMenuBadges();
+$('#resetScore').addEventListener('click', resetUser);
+</script>
+</body>
+</html>
